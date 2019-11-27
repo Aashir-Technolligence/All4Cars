@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">All4Cars</string>
+    <string-array name="service_type">
+        <item>Asigurare Auto</item>
+        <item>Benzinarie</item>
+        <item>Chip-Tunning</item>
+        <item>Dealer Auto / Parc Auto</item>
+        <item>Decarbonizare</item>
+        <item> Dezmembrari auto</item>
+        <item>Diagnoza</item>
+        <item>Geometrie roti</item>
+        <item>Incarcare Clima</item>
+        <item> Incarcare electrica</item>
+        <item> Inmatriculari</item>
+        <item> ITP</item>
+        <item> Magazin piese auto</item>
+        <item> Montaj Folii</item>
+        <item> Parcare privata</item>
+        <item> Rent-a-car</item>
+        <item> Scoala de soferi</item>
+        <item> Service auto</item>
+        <item> Service GPL</item>
+        <item> Service rapid (Ulei, Filtre)</item>
+        <item> Spalatorie auto</item>
+        <item> Statie GPL</item>
+        <item> Tinichigerie / Vopsitorie</item>
+        <item>Tractari</item>
+        <item> Vulcanizare</item>
+
+    </string-array>
+</resources>

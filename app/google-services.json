@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "463397911202",
+    "firebase_url": "https://all4cars-2d23a.firebaseio.com",
+    "project_id": "all4cars-2d23a",
+    "storage_bucket": "all4cars-2d23a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:463397911202:android:1b908b5825bd674ae375fb",
+        "android_client_info": {
+          "package_name": "com.example.all4cars"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "463397911202-9fpi20emikpvikr6rf5j02pkii6o5vfs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.all4cars",
+            "certificate_hash": "fd5cb9c2ac581179c03a3690e42f6b93f8187f01"
+          }
+        },
+        {
+          "client_id": "463397911202-dpfv1ghf05scj5u8avltrv5d7oosp56d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA01eSO_KttnbFr0gaZXRly-YXSFW9iPEY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "463397911202-dpfv1ghf05scj5u8avltrv5d7oosp56d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
