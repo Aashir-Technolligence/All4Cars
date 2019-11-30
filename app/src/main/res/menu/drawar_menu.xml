@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/carWash"
+        android:icon="@drawable/gift"
+        android:title="Car Wash"></item>
+    <item
+        android:id="@+id/tyreShop"
+        android:icon="@drawable/gift"
+        android:title="Tyre Shop"></item>
+    <item
+        android:id="@+id/punctur"
+        android:icon="@drawable/gift"
+        android:title="Punctur"></item>
+    <item
+        android:id="@+id/gasStation"
+        android:icon="@drawable/gift"
+        android:title="Gas Station"></item>
+    <item
+        android:id="@+id/electrician"
+        android:icon="@drawable/gift"
+        android:title="Electrician Shop"></item>
+</menu>

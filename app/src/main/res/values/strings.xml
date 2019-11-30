@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">All4Cars</string>
+    <string name="close">Close</string>
+    <string name="open">Open</string>
     <string-array name="service_type">
         <item>Asigurare Auto</item>
         <item>Benzinarie</item>
