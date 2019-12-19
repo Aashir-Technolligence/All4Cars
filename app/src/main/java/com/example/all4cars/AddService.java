@@ -47,13 +47,12 @@ import java.util.Locale;
 
 public class AddService extends AppCompatActivity {
     private TextView addressText;
-    private EditText companyName , openTime , closeTime , phone;
+    private EditText companyName, openTime, closeTime, phone;
     private LocationManager locationManager;
-    String provider , service , addressString , lati , loni;
+    String provider, service, addressString, lati, loni;
     private ImageView image;
-    Double latitude =0.0, longitude = 0.0;
+    Double latitude = 0.0, longitude = 0.0;
     private Uri filePath;
-    private final int PICK_IMAGE_REQUEST = 71;
     private Button addService;
     ProgressBar progressBar;
     Spinner serviceSpinner;
@@ -89,7 +88,7 @@ public class AddService extends AppCompatActivity {
 
             }
         });
-        reference =  FirebaseDatabase.getInstance().getReference();
+        reference = FirebaseDatabase.getInstance().getReference();
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         mFusedLocationClient.getLastLocation()
@@ -104,19 +103,18 @@ public class AddService extends AppCompatActivity {
                             latitude = location1.getLatitude();
                             lati = (String.valueOf(latitude));
                             loni = (String.valueOf(longitude));
-                            Toast.makeText(getApplicationContext() , lati + " " + loni ,  Toast.LENGTH_LONG).show();
+                            //Toast.makeText(getApplicationContext() , lati + " " + loni ,  Toast.LENGTH_LONG).show();
                             Geocoder geoCoder = new Geocoder(AddService.this, Locale.getDefault());
                             StringBuilder builder = new StringBuilder();
                             try {
                                 List<Address> address = geoCoder.getFromLocation(latitude, longitude, 1);
                                 int maxLines = address.get(0).getMaxAddressLineIndex();
-                                for (int i=0; i<maxLines; i++) {
+                                for (int i = 0; i < maxLines; i++) {
                                     String addressStr = address.get(0).getAddressLine(i);
                                     builder.append(addressStr);
                                     builder.append(" ");
                                 }
-                                if (address.size() > 0)
-                                {
+                                if (address.size() > 0) {
                                     System.out.println(address.get(0).getLocality());
                                     System.out.println(address.get(0).getCountryName());
                                     //Toast.makeText(getApplicationContext() , address.get(0).getAddressLine(0) , Toast.LENGTH_LONG).show();
@@ -131,8 +129,7 @@ public class AddService extends AppCompatActivity {
                             } catch (NullPointerException e) {
                                 // Handle NullPointerException
                             }
-                        }
-                        else {
+                        } else {
                             addressText.setText("Please enable your location");
                         }
                     }
@@ -140,23 +137,23 @@ public class AddService extends AppCompatActivity {
         Criteria criteria = new Criteria();
         provider = locationManager.getBestProvider(criteria, false);
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this , new String[]{Manifest.permission.ACCESS_COARSE_LOCATION , Manifest.permission.ACCESS_FINE_LOCATION} , 1);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             recreate();
             return;
         }
         final Location location = locationManager.getLastKnownLocation(provider);
 
 
-
-
         image = findViewById(R.id.serviceImage);
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+//                Intent intent = new Intent();
+//                intent.setType("image/*");
+//                intent.setAction(Intent.ACTION_GET_CONTENT);
+//                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+                Intent intent = new Intent(Intent.ACTION_PICK , MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent , 2);
             }
 
         });
@@ -165,22 +162,26 @@ public class AddService extends AppCompatActivity {
         addService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!companyName.getText().toString().isEmpty() && !openTime.getText().toString().isEmpty() && !closeTime.getText().toString().isEmpty() && !filePath.getPath().isEmpty() )
-                {
+
+
+
+
+
+                if (!companyName.getText().toString().isEmpty() && !openTime.getText().toString().isEmpty() && !closeTime.getText().toString().isEmpty() && !filePath.getPath().isEmpty()) {
                     progressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(getApplicationContext() , "Inserting Please wait" , Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Inserting Please wait", Toast.LENGTH_LONG).show();
                     final String push = FirebaseDatabase.getInstance().getReference().child("Services").push().getKey();
-                    StorageReference fileReference  = StorageRef.child("images/"+ push);
+                    StorageReference fileReference = StorageRef.child("images/" + push);
                     fileReference.putFile(filePath)
                             .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                 @Override
                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                     Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_SHORT).show();
-                                    if(filePath!=null) {
+                                    if (filePath != null) {
                                         AddServiceAttr addServiceAttr = new AddServiceAttr();
                                         addServiceAttr.setId(push);
                                         Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
-                                        while (!urlTask.isSuccessful());
+                                        while (!urlTask.isSuccessful()) ;
                                         Uri downloadUrl = urlTask.getResult();
                                         addServiceAttr.setImage_url(downloadUrl.toString());
                                         addServiceAttr.setCompanyName(companyName.getText().toString());
@@ -193,7 +194,7 @@ public class AddService extends AppCompatActivity {
                                         addServiceAttr.setLatitude(lati);
                                         addServiceAttr.setLongitude(loni);
 
-                                        
+
                                         reference.child("Services").child(push)
                                                 .setValue(addServiceAttr);
                                         Toast.makeText(getApplicationContext(), "Inserted", Toast.LENGTH_LONG).show();
@@ -204,31 +205,27 @@ public class AddService extends AppCompatActivity {
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(getApplicationContext(), "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             });
-                }
-                else
-                {
+                } else {
                     Toast.makeText(getApplicationContext(), "Please enter all Information", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
-                && data != null && data.getData() != null )
-        {
+        if (requestCode == requestCode && resultCode == RESULT_OK
+                && data != null && data.getData() != null) {
             filePath = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getApplication().getApplicationContext().getContentResolver(), filePath);
                 image.setImageBitmap(bitmap);
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
