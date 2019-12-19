@@ -30,4 +30,5 @@
         <item> Vulcanizare</item>
 
     </string-array>
+    <string name="title_activity_direction_on_map">Map</string>
 </resources>
