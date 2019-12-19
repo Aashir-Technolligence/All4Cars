@@ -13,11 +13,14 @@ public class AddServiceAttr {
     private String OpenTime;
     private String UserID;
     private String Service;
+    private String Phone;
+    private String Latitude;
+    private String Longitude;
 
     public AddServiceAttr() {
     }
 
-    public AddServiceAttr(String id, String image_url, String companyName, String location, String closeTime, String openTime, String userID, String service) {
+    public AddServiceAttr(String id, String image_url, String companyName, String location, String closeTime, String openTime, String userID, String service, String phone, String latitude, String longitude) {
         this.id = id;
         Image_url = image_url;
         CompanyName = companyName;
@@ -26,6 +29,9 @@ public class AddServiceAttr {
         OpenTime = openTime;
         UserID = userID;
         Service = service;
+        Phone = phone;
+        Latitude = latitude;
+        Longitude = longitude;
     }
 
     public String getId() {
@@ -90,5 +96,29 @@ public class AddServiceAttr {
 
     public void setService(String service) {
         Service = service;
+    }
+
+    public String getPhone() {
+        return Phone;
+    }
+
+    public void setPhone(String phone) {
+        Phone = phone;
+    }
+
+    public String getLatitude() {
+        return Latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        Latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return Longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        Longitude = longitude;
     }
 }
