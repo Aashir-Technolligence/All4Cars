@@ -28,5 +28,11 @@
         <item> Vulcanizare</item>
 
     </string-array>
+    <string-array name="selection">
+    <item>Customer</item>
+    <item>Service Provider</item>
+    </string-array>
     <string name="title_activity_direction_on_map">Map</string>
+    <string name="facebook_app_id">788399878274786</string>
+    <string name="fb_login_protocol_scheme">fb788399878274786</string>
 </resources>
