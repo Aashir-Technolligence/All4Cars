@@ -32,7 +32,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class LoginSignupActivity extends AppCompatActivity {
+public class LoginSignupActivity extends AppCompatActivity  {
     private Button btnLogin,btnLogin2,btnSignup;
     ImageView btnFacebook,btnGoole,btnTwitter;
     EditText emailValidate,password;
