@@ -60,6 +60,7 @@ public class AddService extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference reference;
     FusedLocationProviderClient mFusedLocationClient;
+    int count = 0;
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -152,8 +153,8 @@ public class AddService extends AppCompatActivity {
 //                intent.setType("image/*");
 //                intent.setAction(Intent.ACTION_GET_CONTENT);
 //                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
-                Intent intent = new Intent(Intent.ACTION_PICK , MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent , 2);
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, 2);
             }
 
         });
@@ -164,50 +165,54 @@ public class AddService extends AppCompatActivity {
             public void onClick(View v) {
 
 
+                if (!companyName.getText().toString().isEmpty() && !openTime.getText().toString().isEmpty() && !closeTime.getText().toString().isEmpty()) {
+                    if (count == 1) {
+                        progressBar.setVisibility(View.VISIBLE);
+                        Toast.makeText(getApplicationContext(), "Inserting Please wait", Toast.LENGTH_LONG).show();
+                        final String push = FirebaseDatabase.getInstance().getReference().child("Services").push().getKey();
+                        StorageReference fileReference = StorageRef.child("images/" + push);
+                        fileReference.putFile(filePath)
+                                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                        Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_SHORT).show();
+                                        if (filePath != null) {
+                                            AddServiceAttr addServiceAttr = new AddServiceAttr();
+                                            addServiceAttr.setId(push);
+                                            Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
+                                            while (!urlTask.isSuccessful()) ;
+                                            Uri downloadUrl = urlTask.getResult();
+                                            addServiceAttr.setImage_url(downloadUrl.toString());
+                                            addServiceAttr.setCompanyName(companyName.getText().toString());
+                                            addServiceAttr.setService(service);
+                                            addServiceAttr.setCloseTime(closeTime.getText().toString());
+                                            addServiceAttr.setOpenTime(openTime.getText().toString());
+                                            addServiceAttr.setLocation(addressString);
+                                            addServiceAttr.setPhone(phone.getText().toString());
+                                            addServiceAttr.setRating(Float.valueOf((float) 0.0));
+                                            addServiceAttr.setTotal(0);
+
+                                            addServiceAttr.setUserID("1");
+                                            addServiceAttr.setLatitude(lati);
+                                            addServiceAttr.setLongitude(loni);
 
 
+                                            reference.child("Services").child(push)
+                                                    .setValue(addServiceAttr);
+                                            Toast.makeText(getApplicationContext(), "Inserted", Toast.LENGTH_LONG).show();
 
-                if (!companyName.getText().toString().isEmpty() && !openTime.getText().toString().isEmpty() && !closeTime.getText().toString().isEmpty() && !filePath.getPath().isEmpty()) {
-                    progressBar.setVisibility(View.VISIBLE);
-                    Toast.makeText(getApplicationContext(), "Inserting Please wait", Toast.LENGTH_LONG).show();
-                    final String push = FirebaseDatabase.getInstance().getReference().child("Services").push().getKey();
-                    StorageReference fileReference = StorageRef.child("images/" + push);
-                    fileReference.putFile(filePath)
-                            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                @Override
-                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                    Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_SHORT).show();
-                                    if (filePath != null) {
-                                        AddServiceAttr addServiceAttr = new AddServiceAttr();
-                                        addServiceAttr.setId(push);
-                                        Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
-                                        while (!urlTask.isSuccessful()) ;
-                                        Uri downloadUrl = urlTask.getResult();
-                                        addServiceAttr.setImage_url(downloadUrl.toString());
-                                        addServiceAttr.setCompanyName(companyName.getText().toString());
-                                        addServiceAttr.setService(service);
-                                        addServiceAttr.setCloseTime(closeTime.getText().toString());
-                                        addServiceAttr.setOpenTime(openTime.getText().toString());
-                                        addServiceAttr.setLocation(addressString);
-                                        addServiceAttr.setPhone(phone.getText().toString());
-
-                                        addServiceAttr.setLatitude(lati);
-                                        addServiceAttr.setLongitude(loni);
-
-
-                                        reference.child("Services").child(push)
-                                                .setValue(addServiceAttr);
-                                        Toast.makeText(getApplicationContext(), "Inserted", Toast.LENGTH_LONG).show();
-
+                                        }
                                     }
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(getApplicationContext(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(getApplicationContext(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Please upload an image.", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Toast.makeText(getApplicationContext(), "Please enter all Information", Toast.LENGTH_SHORT).show();
                 }
@@ -225,6 +230,7 @@ public class AddService extends AppCompatActivity {
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getApplication().getApplicationContext().getContentResolver(), filePath);
                 image.setImageBitmap(bitmap);
+                count = 1;
             } catch (IOException e) {
                 e.printStackTrace();
             }
