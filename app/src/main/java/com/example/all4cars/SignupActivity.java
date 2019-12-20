@@ -50,7 +50,6 @@ public class SignupActivity extends AppCompatActivity {
         mHaveAccountTv=findViewById(R.id.have_accounttv);
         btnFacebook = (ImageView) findViewById(R.id.imageView);
         btnGoole = (ImageView) findViewById(R.id.imageView2);
-        btnTwitter = (ImageView) findViewById(R.id.imageView3);
         progressDialog=new ProgressDialog(this);
 
 

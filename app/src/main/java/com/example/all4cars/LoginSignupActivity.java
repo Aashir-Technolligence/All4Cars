@@ -59,7 +59,6 @@ public class LoginSignupActivity extends AppCompatActivity {
         btnSignup=(Button)findViewById(R.id.btnSignup);
         btnFacebook = (ImageView) findViewById(R.id.imageView);
         btnGoole = (ImageView) findViewById(R.id.imageView2);
-        btnTwitter = (ImageView) findViewById(R.id.imageView3);
 
         emailValidate = (EditText)findViewById(R.id.editText);
 
@@ -92,14 +91,6 @@ public class LoginSignupActivity extends AppCompatActivity {
 
         final String arr[] = getResources().getStringArray(R.array.selection);
 
-        btnFacebook.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/"));
-                startActivity(browserIntent);
-            }
-        } );
-
 
 
         btnSignup.setOnClickListener(new View.OnClickListener() {
@@ -127,22 +118,7 @@ public class LoginSignupActivity extends AppCompatActivity {
                         }
                     }
                 } );
-//                dialog.setPositiveButton( "OK", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        Intent intent = new Intent(LoginSignupActivity.this,SignupActivity.class);
-//                        startActivity(intent);
-//                        finish();
-//                    }
-//                } );
 
-//                dialog.setPositiveButton( "Ok", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        Intent i = new Intent( LoginSignupActivity.this, SignupActivity.class );
-//                        startActivity( i );
-//                    }
-//                } );
 
                 final AlertDialog alert = dialog.create();
                 alert.show();
