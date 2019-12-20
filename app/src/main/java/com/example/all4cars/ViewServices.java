@@ -29,7 +29,7 @@ public class ViewServices extends AppCompatActivity {
         recyclerView=(RecyclerView) findViewById(R.id.recyclerview);
         addServiceAttrs = new ArrayList<AddServiceAttr>();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        databaseReference.child("Services").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("Services").orderByChild("rating").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 addServiceAttrs.clear();
