@@ -114,18 +114,27 @@ public class LoginSignupActivity extends AppCompatActivity {
                         selection = arr[which];
                         if(selection.equals( "Customer" ))
                         {
-                            Toast.makeText( LoginSignupActivity.this, "Customer Selected", Toast.LENGTH_SHORT ).show();
+                            Intent intent = new Intent(LoginSignupActivity.this,SignupActivity.class);
+                            intent.putExtra( "name", String.valueOf( "Customer" ) );
+                            startActivity(intent);
+
+                        }
+                        if(selection.equals( "Service Provider" )){
+                            Intent intent = new Intent(LoginSignupActivity.this,SignupActivity.class);
+                            intent.putExtra( "name", String.valueOf( "ServiceProvider" ) );
+                            startActivity(intent);
+
                         }
                     }
                 } );
-                dialog.setPositiveButton( "OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(LoginSignupActivity.this,SignupActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                } );
+//                dialog.setPositiveButton( "OK", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        Intent intent = new Intent(LoginSignupActivity.this,SignupActivity.class);
+//                        startActivity(intent);
+//                        finish();
+//                    }
+//                } );
 
 //                dialog.setPositiveButton( "Ok", new DialogInterface.OnClickListener() {
 //                    @Override

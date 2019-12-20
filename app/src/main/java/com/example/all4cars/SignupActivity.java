@@ -29,8 +29,9 @@ import java.util.HashMap;
 public class SignupActivity extends AppCompatActivity {
     private Button btnLogin,btnSignup;
     ImageView btnFacebook,btnGoole,btnTwitter;
-    EditText txtEmail,txtPassword,txtReenterPassword;
+    EditText txtName,txtEmail,txtPassword,txtReenterPassword;
     ProgressDialog progressDialog;
+    String category;
     TextView mHaveAccountTv;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
@@ -41,9 +42,11 @@ public class SignupActivity extends AppCompatActivity {
         setContentView( R.layout.activity_signup );
         btnLogin=(Button)findViewById(R.id.btnLogin);
         btnSignup=(Button)findViewById(R.id.txtSignUp);
-        txtEmail =(EditText)findViewById( R.id.editText ) ;
-        txtPassword = (EditText)findViewById( R.id.editText2 ) ;
-        txtReenterPassword = (EditText)findViewById( R.id.editText3 ) ;
+        txtEmail =(EditText)findViewById( R.id.editTextEmail ) ;
+        txtPassword = (EditText)findViewById( R.id.editTextPassword ) ;
+        txtName= (EditText)findViewById( R.id.editTextName) ;
+
+        txtReenterPassword = (EditText)findViewById( R.id.editRePassword ) ;
         mHaveAccountTv=findViewById(R.id.have_accounttv);
         btnFacebook = (ImageView) findViewById(R.id.imageView);
         btnGoole = (ImageView) findViewById(R.id.imageView2);
@@ -53,11 +56,20 @@ public class SignupActivity extends AppCompatActivity {
 
         final String arr[] = getResources().getStringArray(R.array.selection);
 
+        Intent in = getIntent();
+        category = in.getStringExtra( "name" );
+
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String email=txtEmail.getText().toString().trim();
                 String password=txtPassword.getText().toString().trim();
+                String name = txtName.getText().toString();
+
+                if (name==null || name.equals( "" ))
+                {
+                   txtName.setError( "Please Fill Name" );
+                }
                 if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
 
                     txtEmail.setError("Invalid Email");
@@ -69,7 +81,7 @@ public class SignupActivity extends AppCompatActivity {
 
                 }else {
                     progressDialog.setMessage("Registering ....");
-                    registeruser(email,password);
+                    registeruser(email,password,name);
                 }
 
             }
@@ -95,7 +107,7 @@ public class SignupActivity extends AppCompatActivity {
 
     }
 
-    private void registeruser(final String email, String password) {
+    private void registeruser(final String email, String password, final String name) {
         progressDialog.show();
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -107,12 +119,15 @@ public class SignupActivity extends AppCompatActivity {
                             //FirebaseUser user = mAuth.getCurrentUser();
 
                             String Email=email;
+                            String Name = name;
                             String uid=FirebaseAuth.getInstance().getCurrentUser().getUid();
                             FirebaseDatabase database=FirebaseDatabase.getInstance();
 
                             DatabaseReference reference=database.getReference("Users");
 
+                            reference.child(uid).child( "Name" ).setValue(Name);
                             reference.child(uid).child( "Email" ).setValue(Email);
+                            reference.child(uid).child( "Category" ).setValue(category);
                             reference.child(uid).child( "Id" ).setValue(uid);
 
 
