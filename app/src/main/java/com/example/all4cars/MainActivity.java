@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,13 +29,23 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
 
     private static final int REQUEST_LOCATION = 0;
     LocationManager locationManager;
+            DatabaseReference dref = FirebaseDatabase.getInstance().getReference();
     private String provider;
     DrawerLayout drawerLayout;
+    TextView name,email;
     ImageView imageView;
     FloatingActionButton floatingActionButton;
     ActionBarDrawerToggle drawerToggle;
@@ -59,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         //header click navbar
         View headerview = navigationView.getHeaderView(0);
         imageView=(ImageView) headerview.findViewById(R.id.profile_image);
+        name=(TextView) headerview.findViewById(R.id.name);
+        email=(TextView) headerview.findViewById(R.id.email);
 
         //opening map fragment
         SupportMapFragment supportMapFragment =(SupportMapFragment)
@@ -71,6 +84,22 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
+        //FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
+        String currentUser="wAtuSN7fcaczKTKer402YWDCRmt2";//user.getUid();
+        dref.child("Users").child(currentUser).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                name.setText(dataSnapshot.child("name").getValue().toString());
+                email.setText(dataSnapshot.child("Email").getValue().toString());
+                Picasso.get().load(dataSnapshot.child( "pic" ).getValue().toString()).into(imageView);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        //imageView.setImageResource();
 
         //profile img click
         imageView.setOnClickListener(new View.OnClickListener() {
@@ -135,20 +164,20 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
-            case R.id.carWash: {
+            case R.id.Benzinarie: {
                 Snackbar.make(drawerLayout, "Car Wash", Snackbar.LENGTH_LONG).show();
                 break;
             }
-            case R.id.tyreShop: {
+            case R.id.Decarbonizare: {
                 Snackbar.make(drawerLayout, "Tyre Shop", Snackbar.LENGTH_LONG).show();
                 break;
             }
-            case R.id.punctur: {
+            case R.id.Diagnoza: {
                 Snackbar.make(drawerLayout, "Punctur", Snackbar.LENGTH_LONG).show();
                 break;
 
             }
-            case R.id.profile_image: {
+            case R.id.Inmatriculari: {
                 Snackbar.make(drawerLayout, "Punctur", Snackbar.LENGTH_LONG).show();
                 break;
 

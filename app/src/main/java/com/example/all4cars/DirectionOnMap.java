@@ -40,8 +40,6 @@ public class DirectionOnMap extends FragmentActivity implements OnMapReadyCallba
         longitude = intent.getStringExtra("Longitude");
         destination = new MarkerOptions().position(new LatLng(Double.parseDouble(latitude) , Double.parseDouble(longitude)));
 
-
-
     }
 
     @Override
