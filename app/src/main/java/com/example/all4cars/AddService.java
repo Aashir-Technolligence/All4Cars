@@ -189,7 +189,10 @@ public class AddService extends AppCompatActivity {
                                             addServiceAttr.setOpenTime(openTime.getText().toString());
                                             addServiceAttr.setLocation(addressString);
                                             addServiceAttr.setPhone(phone.getText().toString());
+                                            addServiceAttr.setRating(Float.valueOf((float) 0.0));
+                                            addServiceAttr.setTotal(0);
 
+                                            addServiceAttr.setUserID("1");
                                             addServiceAttr.setLatitude(lati);
                                             addServiceAttr.setLongitude(loni);
 
@@ -208,7 +211,7 @@ public class AddService extends AppCompatActivity {
                                     }
                                 });
                     } else {
-                        Toast.makeText(getApplicationContext(), "Please enter all Information", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Please upload an image.", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(getApplicationContext(), "Please enter all Information", Toast.LENGTH_SHORT).show();

@@ -16,11 +16,13 @@ public class AddServiceAttr {
     private String Phone;
     private String Latitude;
     private String Longitude;
+    private Float Rating;
+    private Integer Total;
 
     public AddServiceAttr() {
     }
 
-    public AddServiceAttr(String id, String image_url, String companyName, String location, String closeTime, String openTime, String userID, String service, String phone, String latitude, String longitude) {
+    public AddServiceAttr(String id, String image_url, String companyName, String location, String closeTime, String openTime, String userID, String service, String phone, String latitude, String longitude, Float rating, Integer total) {
         this.id = id;
         Image_url = image_url;
         CompanyName = companyName;
@@ -32,6 +34,8 @@ public class AddServiceAttr {
         Phone = phone;
         Latitude = latitude;
         Longitude = longitude;
+        Rating = rating;
+        Total = total;
     }
 
     public String getId() {
@@ -120,5 +124,21 @@ public class AddServiceAttr {
 
     public void setLongitude(String longitude) {
         Longitude = longitude;
+    }
+
+    public Float getRating() {
+        return Rating;
+    }
+
+    public void setRating(Float rating) {
+        Rating = rating;
+    }
+
+    public Integer getTotal() {
+        return Total;
+    }
+
+    public void setTotal(Integer total) {
+        Total = total;
     }
 }

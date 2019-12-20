@@ -48,7 +48,8 @@
                 android:layout_height="wrap_content"
                 style = "?android:attr/ratingBarStyleSmall"
                 android:numStars = "5"
-                android:layout_marginLeft="5dp">
+                android:layout_marginLeft="5dp"
+                android:id="@+id/postRating">
 
             </RatingBar>
             <TextView
