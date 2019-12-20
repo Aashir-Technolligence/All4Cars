@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +39,9 @@ public class ViewServiceAdapter extends RecyclerView.Adapter<ViewServiceAdapter.
         holder.company.setText(addServiceAttrs.get(position).getCompanyName());
         holder.location.setText(addServiceAttrs.get(position).getLocation());
         holder.close.setText(addServiceAttrs.get(position).getCloseTime());
+        holder.rating.setText(String.valueOf(addServiceAttrs.get(position).getRating()));
+        holder.ratingBar.setRating(Float.valueOf(addServiceAttrs.get(position).getRating()));
+        holder.total.setText(String.valueOf(addServiceAttrs.get(position).getTotal()));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +65,8 @@ public class ViewServiceAdapter extends RecyclerView.Adapter<ViewServiceAdapter.
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView serviceImage;
-        TextView service,location,company,close;
+        TextView service,location,company,close , total , rating;
+        RatingBar ratingBar;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             serviceImage = itemView.findViewById(R.id.imgService);
@@ -69,6 +74,10 @@ public class ViewServiceAdapter extends RecyclerView.Adapter<ViewServiceAdapter.
             company = itemView.findViewById(R.id.txtCompany);
             location = itemView.findViewById(R.id.txtLocation);
             close = itemView.findViewById(R.id.txtCloseTime);
+            ratingBar = itemView.findViewById(R.id.postRating);
+            rating = itemView.findViewById(R.id.txtRating);
+            total = itemView.findViewById(R.id.txtTotalRating);
+
         }
     }
 }

@@ -32,6 +32,7 @@ public class ViewServices extends AppCompatActivity {
         databaseReference.child("Services").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                addServiceAttrs.clear();
                 //profiledata.clear();
                 for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
                     AddServiceAttr p = dataSnapshot1.getValue(AddServiceAttr.class);
