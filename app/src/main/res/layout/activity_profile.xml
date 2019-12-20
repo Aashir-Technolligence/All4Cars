@@ -44,6 +44,7 @@
     </LinearLayout>
     <View
         android:layout_width="match_parent"
+        android:id="@+id/view1"
         android:layout_height="1dp"
         android:background="#A9A9A9"></View>
     <LinearLayout
@@ -79,6 +80,7 @@
     </LinearLayout>
     <View
         android:layout_width="match_parent"
+        android:id="@+id/view2"
         android:layout_height="1dp"
         android:background="#A9A9A9"></View>
     <LinearLayout
