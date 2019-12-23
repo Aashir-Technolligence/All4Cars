@@ -127,16 +127,21 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(final GoogleMap googleMap) {
         String serviceId=getIntent().getStringExtra("ServiceId");
-        if(!serviceId.equals("")){
-
-
-
-        }
-        else {
+//        if(!serviceId.equals("")){
+//
+//
+//
+//        }
+//        else
+        {
             dref.child("Services").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
+                    for(DataSnapshot ds : dataSnapshot.getChildren()){
+                        AddServiceAttr addServiceAttr=ds.getValue(AddServiceAttr.class);
+                        LatLng latLng=new LatLng(Double.valueOf(addServiceAttr.getLatitude()), Double.valueOf(addServiceAttr.getLongitude()));
+                        googleMap.addMarker(new MarkerOptions().position(latLng).title(addServiceAttr.getId()));
+                    }
 
                 }
 

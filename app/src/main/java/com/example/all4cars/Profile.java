@@ -53,7 +53,7 @@ public class Profile extends AppCompatActivity {
         dref.child("Users").child(currentUser).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                name.setText(dataSnapshot.child("name").getValue().toString());
+                name.setText(dataSnapshot.child("Name").getValue().toString());
                 email.setText(dataSnapshot.child("Email").getValue().toString());
                 Picasso.get().load(dataSnapshot.child( "pic" ).getValue().toString()).into(imageView);
                 category=dataSnapshot.child("Category").getValue().toString();

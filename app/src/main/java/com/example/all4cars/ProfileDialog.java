@@ -52,7 +52,7 @@ public class ProfileDialog extends AppCompatDialogFragment {
         dref.child("Users").child(currentUser).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                editText.setText(dataSnapshot.child("name").getValue().toString());
+                editText.setText(dataSnapshot.child("Name").getValue().toString());
                 Picasso.get().load(dataSnapshot.child( "pic" ).getValue().toString()).into(imageView);
                 newFilePath=dataSnapshot.child( "pic" ).getValue().toString();
             }
@@ -79,7 +79,7 @@ public class ProfileDialog extends AppCompatDialogFragment {
                     filepath=Uri.parse(newFilePath);
                 }
 
-                dref.child(currentUser).child("name").setValue(newName);
+                dref.child(currentUser).child("Name").setValue(newName);
                 dref.child(currentUser).child("pic").setValue(filepath);
 
 
