@@ -34,6 +34,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -167,6 +168,7 @@ public class AddService extends AppCompatActivity {
 
                 if (!companyName.getText().toString().isEmpty() && !openTime.getText().toString().isEmpty() && !closeTime.getText().toString().isEmpty()) {
                     if (count == 1) {
+                        final String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
                         progressBar.setVisibility(View.VISIBLE);
                         Toast.makeText(getApplicationContext(), "Inserting Please wait", Toast.LENGTH_LONG).show();
                         final String push = FirebaseDatabase.getInstance().getReference().child("Services").push().getKey();
@@ -192,7 +194,7 @@ public class AddService extends AppCompatActivity {
                                             addServiceAttr.setRating(Float.valueOf((float) 0.0));
                                             addServiceAttr.setTotal(0);
 
-                                            addServiceAttr.setUserID("1");
+                                            addServiceAttr.setUserID(id);
                                             addServiceAttr.setLatitude(lati);
                                             addServiceAttr.setLongitude(loni);
 

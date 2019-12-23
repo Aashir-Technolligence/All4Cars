@@ -84,8 +84,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-        //FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
-        String currentUser="wAtuSN7fcaczKTKer402YWDCRmt2";//user.getUid();
+        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
+        String currentUser=user.getUid();
         dref.child("Users").child(currentUser).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

@@ -3,6 +3,7 @@ package com.example.all4cars;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -45,8 +48,8 @@ public class Profile extends AppCompatActivity {
                 profileDialog.show(getSupportFragmentManager(),"Example Dialog");
             }
         });
-        //FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
-        String currentUser="wAtuSN7fcaczKTKer402YWDCRmt2";//user.getUid();
+        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
+        String currentUser=user.getUid();
         dref.child("Users").child(currentUser).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -67,6 +70,19 @@ public class Profile extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }
+        });
+        LayoutAddService.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Profile.this,AddService.class));
+
+            }
+        });
+        LayoutViewService.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Profile.this,ViewServices.class));
             }
         });
     }

@@ -19,6 +19,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -45,8 +47,8 @@ public class ProfileDialog extends AppCompatDialogFragment {
         final View view=inflater.inflate(R.layout.profile_dialog,null);
         imageView=(ImageView) view.findViewById(R.id.profileImage);
         editText=(EditText) view.findViewById(R.id.name);
-        //FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
-        final String currentUser="wAtuSN7fcaczKTKer402YWDCRmt2";//user.getUid();
+        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
+        final String currentUser=user.getUid();
         dref.child("Users").child(currentUser).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

@@ -19,7 +19,7 @@
             android:id="@+id/serviceImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/ic_location_on_black_24dp"
+            android:src="@drawable/car_icon"
             android:adjustViewBounds="true"
             />
 

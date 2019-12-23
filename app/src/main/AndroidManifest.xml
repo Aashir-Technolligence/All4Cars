@@ -51,7 +51,8 @@
 
         </activity>
         <activity android:name=".SignupActivity" />
-        <activity android:name=".SplashScreenForCarServices" />
+        <activity android:name=".SplashScreenForCarServices" >
+        </activity>
 
         <activity android:name=".Profile" />
 
