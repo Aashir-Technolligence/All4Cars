@@ -50,7 +50,7 @@ import java.util.HashMap;
 
 public class LoginSignupActivity extends AppCompatActivity  {
     private static final int RC_SIGN_IN = 100;
-    private Button btnLogin,btnLogin2,btnSignup;
+    private Button btnLogin,btnLogin2,btnSignup,btnSkip;
     ImageView btnFacebook,btnGoole,btnTwitter;
     EditText emailValidate,password;
     TextView mRecoverPasswordtv;
@@ -81,6 +81,7 @@ GoogleSignInClient mGoogleSignInClient;
         btnLogin=(Button)findViewById(R.id.btnLogin);
         btnLogin2=(Button)findViewById(R.id.button3);
         btnSignup=(Button)findViewById(R.id.btnSignup);
+        btnSkip = (Button)findViewById(R.id.btnSkip);
 //        btnFacebook = (ImageView) findViewById(R.id.imageView);
         mGoogleloginbtn=findViewById(R.id.googleloginbtn);
       //  btnGoole = (ImageView) findViewById(R.id.imageView2);
@@ -98,6 +99,19 @@ GoogleSignInClient mGoogleSignInClient;
                 showRecoverPasswordDialog();
             }
         });
+
+
+        btnSkip.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginSignupActivity.this,MainActivity.class);
+                intent.putExtra( "ServiceId","Skip" );
+                startActivity(intent);
+
+
+            }
+        } );
+
 
 //        mAuth = FirebaseAuth.getInstance(  );
 //        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions
@@ -251,8 +265,9 @@ GoogleSignInClient mGoogleSignInClient;
                                 hashMap.put("Email",email);
                                 hashMap.put("Id",uid);
                                 hashMap.put("Category",selection);
-                                hashMap.put("pic","");
-                                hashMap.put("Name","");
+                                hashMap.put("pic","\n" +
+                                        "https://firebasestorage.googleapis.com/v0/b/all4cars-2d23a.appspot.com/o/images%2F-LwmgwIpNqQq8NiaObWH?alt=media&token=80062648-a4e4-47fa-90bf-c3d7592a9aaf");
+                                hashMap.put("Name","Car4All");
 
                                 //firebase data instance
                                 FirebaseDatabase database=FirebaseDatabase.getInstance();

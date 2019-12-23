@@ -79,7 +79,13 @@ public class SignupActivity extends AppCompatActivity {
         Intent in = getIntent();
         category = in.getStringExtra( "name" );
 
-
+        mHaveAccountTv.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent( SignupActivity.this,LoginSignupActivity.class );
+                startActivity( intent );
+            }
+        } );
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()

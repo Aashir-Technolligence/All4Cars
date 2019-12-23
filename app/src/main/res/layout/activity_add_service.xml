@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Car Services"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/colorBlack"
             android:textSize="17dp" />
 
         <Spinner
@@ -49,7 +49,7 @@
         android:layout_height="wrap_content"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:textColorHint="@color/colorPrimary"
+        android:textColorHint="@color/colorBlack"
         >
 
         <EditText
@@ -69,7 +69,7 @@
         android:layout_height="wrap_content"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:textColorHint="@color/colorPrimary"
+        android:textColorHint="@color/colorBlack"
         >
 
         <EditText
@@ -107,7 +107,7 @@
             android:focusableInTouchMode="true"
             android:hint="Please enable your internet"
             android:gravity="center"
-            android:textColorHint="@color/colorPrimary" />
+            android:textColorHint="@color/colorBlack" />
 
     </RelativeLayout>
     <LinearLayout
@@ -121,7 +121,7 @@
             android:layout_height="match_parent"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:textColorHint="@color/colorPrimary"
+            android:textColorHint="@color/colorBlack"
             >
 
             <EditText
@@ -141,7 +141,7 @@
             android:layout_height="match_parent"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:textColorHint="@color/colorPrimary"
+            android:textColorHint="@color/colorBlack"
             >
 
             <EditText
@@ -162,7 +162,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorBlue"
         android:text="Add Service"
         android:id="@+id/btnAddService"
         android:textAllCaps="true"/>

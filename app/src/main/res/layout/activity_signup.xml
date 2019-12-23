@@ -196,6 +196,7 @@
         android:id="@+id/have_accounttv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="20dp"
         android:text="already have account?? Login"
         app:layout_constraintStart_toEndOf="@+id/googleloginbtn"
         app:layout_constraintTop_toBottomOf="@+id/txtSignUp"

@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/name"
             android:hint="John Smith"
-            android:backgroundTint="@color/colorPrimary"
+            android:backgroundTint="@color/colorBlack"
             android:textSize="25dp"></EditText>
 
        </LinearLayout>
