@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="18dp"
         android:background="@drawable/loginbutton"
         android:text="Signup"
         android:textColor="@android:color/white"
@@ -42,41 +42,22 @@
         app:layout_constraintTop_toBottomOf="@+id/btnLogin"
         app:layout_constraintVertical_bias="0.053" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="50dp"
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/googleloginbtn"
+        android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.023"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnSignup"
-        app:layout_constraintVertical_bias="0.176"
-        app:srcCompat="@mipmap/facebook" />
+        app:layout_constraintVertical_bias="0.269"
+        app:srcCompat="@mipmap/facebook"></com.google.android.gms.common.SignInButton>
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.023"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.191"
-        app:srcCompat="@mipmap/google" />
+
 
     <TextView
         android:id="@+id/textView2"
@@ -185,10 +166,10 @@
         android:textColor="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.289"
-        app:layout_constraintStart_toEndOf="@+id/imageView2"
+        app:layout_constraintHorizontal_bias="0.078"
+        app:layout_constraintStart_toEndOf="@+id/googleloginbtn"
         app:layout_constraintTop_toBottomOf="@+id/editTextEmail"
-        app:layout_constraintVertical_bias="0.035" />
+        app:layout_constraintVertical_bias="0.017" />
 
     <Button
         android:id="@+id/txtSignUp"
@@ -234,10 +215,10 @@
         android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.672"
-        app:layout_constraintStart_toEndOf="@+id/imageView2"
+        app:layout_constraintHorizontal_bias="0.29"
+        app:layout_constraintStart_toEndOf="@+id/googleloginbtn"
         app:layout_constraintTop_toBottomOf="@+id/textView5"
-        app:layout_constraintVertical_bias="0.022" />
+        app:layout_constraintVertical_bias="0.025" />
 
     <TextView
         android:id="@+id/rePassword"
@@ -252,10 +233,10 @@
         android:textColor="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.364"
-        app:layout_constraintStart_toEndOf="@+id/imageView2"
+        app:layout_constraintHorizontal_bias="0.106"
+        app:layout_constraintStart_toEndOf="@+id/googleloginbtn"
         app:layout_constraintTop_toBottomOf="@+id/editTextPassword"
-        app:layout_constraintVertical_bias="0.053" />
+        app:layout_constraintVertical_bias="0.044" />
 
     <EditText
         android:id="@+id/editRePassword"
@@ -271,10 +252,10 @@
         android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.663"
-        app:layout_constraintStart_toEndOf="@+id/imageView2"
+        app:layout_constraintHorizontal_bias="0.29"
+        app:layout_constraintStart_toEndOf="@+id/googleloginbtn"
         app:layout_constraintTop_toBottomOf="@+id/rePassword"
-        app:layout_constraintVertical_bias="0.023" />
+        app:layout_constraintVertical_bias="0.027" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
