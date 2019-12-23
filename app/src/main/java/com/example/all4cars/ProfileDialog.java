@@ -19,6 +19,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -26,6 +28,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -36,6 +41,7 @@ public class ProfileDialog extends AppCompatDialogFragment {
     DatabaseReference dref = FirebaseDatabase.getInstance().getReference();
     String newName,newFilePath;
     private Uri filepath;
+    int x=0;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -72,16 +78,32 @@ public class ProfileDialog extends AppCompatDialogFragment {
 
 
                 alertDialogBuilder.setView(view).setPositiveButton("Save Changes", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(DialogInterface dialog, final int which) {
                 newName=editText.getText().toString();
                 //Toast.makeText(view.getContext(), ""+newName, Toast.LENGTH_LONG).show();
-                if(filepath.toString().equals("")){
+                if(x==0){
+
                     filepath=Uri.parse(newFilePath);
+                    dref.child("Users").child(currentUser).child("Name").setValue(newName);
+                    dref.child("Users").child(currentUser).child("pic").setValue(filepath);
+
                 }
+                else {
+                    StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("images/" + FirebaseDatabase.getInstance().getReference().child("Users").push().getKey());
+                    storageReference.putFile(filepath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                            while (!uriTask.isSuccessful()) ;
+                            Uri downloadUri = uriTask.getResult();
 
-                dref.child(currentUser).child("Name").setValue(newName);
-                dref.child(currentUser).child("pic").setValue(filepath);
+                            dref.child("Users").child(currentUser).child("Name").setValue(newName);
+                            dref.child("Users").child(currentUser).child("pic").setValue(downloadUri.toString());
 
+
+                        }
+                    });
+                }
 
             }
         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -102,6 +124,7 @@ public class ProfileDialog extends AppCompatDialogFragment {
 
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),filepath);
                 imageView.setImageBitmap(bitmap);
+                x=1;
 
 
             } catch (IOException e) {

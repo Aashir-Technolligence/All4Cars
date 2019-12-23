@@ -1,6 +1,7 @@
 package com.example.all4cars;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -86,33 +87,43 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(drawerLayout,"Floating button click",Snackbar.LENGTH_LONG).show();
+                String serviceId=getIntent().getStringExtra("ServiceId");
+                Snackbar.make(drawerLayout,""+serviceId,Snackbar.LENGTH_LONG).show();
             }
         });
 
         FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
         String currentUser=user.getUid();
-        dref.child("Users").child(currentUser).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                name.setText(dataSnapshot.child("Name").getValue().toString());
-                email.setText(dataSnapshot.child("Email").getValue().toString());
-                Picasso.get().load(dataSnapshot.child( "pic" ).getValue().toString()).into(imageView);
-            }
+        if(currentUser==null) {
+            dref.child("Users").child(currentUser).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    name.setText(dataSnapshot.child("Name").getValue().toString());
+                    email.setText(dataSnapshot.child("Email").getValue().toString());
+                    Picasso.get().load(dataSnapshot.child("pic").getValue().toString()).into(imageView);
+                }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        }
         //imageView.setImageResource();
 
         //profile img click
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,Profile.class));
-            }
+                String skip=getIntent().getStringExtra("ServiceId");
+                if(skip.equals("Skip")){
+                    Snackbar.make(drawerLayout, "Please Login First", Snackbar.LENGTH_LONG).show();
+
+                }
+                else {
+                    startActivity(new Intent(MainActivity.this, Profile.class));
+                }
+                }
         });
 
 
@@ -124,11 +135,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
 
+    @SuppressLint("RestrictedApi")
     @Override
     public void onMapReady(final GoogleMap googleMap) {
         String serviceId=getIntent().getStringExtra("ServiceId");
         if(serviceId.equals("Empty")){
+            floatingActionButton.setVisibility(View.GONE);
 
+            imageView.setVisibility(View.GONE);
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
             mFusedLocationClient.getLastLocation()
@@ -145,9 +159,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 loni = (String.valueOf(longitude));
 
                                 //showing on map
-                                LatLng latLng = new LatLng(latitude, longitude);
-                                googleMap.addMarker(new MarkerOptions().position(latLng).title("Your location"));
-                                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18), 4000, null);
+                                LatLng latLng1 = new LatLng(latitude, longitude);
+                                googleMap.addMarker(new MarkerOptions().position(latLng1).title("Your location"));
+                                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng1, 18), 4000, null);
                             } else {
 
                                 Snackbar.make(drawerLayout, "Please allow location to this app", Snackbar.LENGTH_LONG).show();
@@ -167,9 +181,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         AddServiceAttr addServiceAttr=ds.getValue(AddServiceAttr.class);
                         LatLng latLng=new LatLng(Double.valueOf(addServiceAttr.getLatitude()), Double.valueOf(addServiceAttr.getLongitude()));
                         googleMap.addMarker(new MarkerOptions().position(latLng).title(addServiceAttr.getId()));
-                    }
+                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18), 4000, null);
 
-                }
+                    }
+               }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -198,12 +213,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         switch (menuItem.getItemId()) {
             case R.id.Benzinarie: {
                 Intent intent=new Intent(this,MainActivity.class);
-                intent.putExtra("ServiceId","Benzinarie");
+                intent.putExtra("ServiceId","Asigurare Auto");
                 startActivity(intent);
                 break;
             }
             case R.id.Decarbonizare: {
-                Snackbar.make(drawerLayout, "Tyre Shop", Snackbar.LENGTH_LONG).show();
+                Intent intent=new Intent(this,MainActivity.class);
+                intent.putExtra("ServiceId","Chip-Tunning");
+                startActivity(intent);
                 break;
             }
             case R.id.Diagnoza: {

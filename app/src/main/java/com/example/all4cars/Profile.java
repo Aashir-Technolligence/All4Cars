@@ -61,8 +61,8 @@ public class Profile extends AppCompatActivity {
 
                     LayoutAddService.setVisibility(View.GONE);
                     LayoutViewService.setVisibility(View.GONE);
-                    view1.setVisibility(view1.GONE);
-                    view2.setVisibility(view2.GONE);
+                    view1.setVisibility(View.GONE);
+                    view2.setVisibility(View.GONE);
 
                 }
             }
