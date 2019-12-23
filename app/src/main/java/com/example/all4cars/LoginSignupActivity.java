@@ -147,7 +147,7 @@ GoogleSignInClient mGoogleSignInClient;
 
 
                         }
-                        if (selection.equals( "Service Provider" )) {
+                        if (selection.equals( "ServiceProvider" )) {
 
                             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
                             pd.setMessage("Logging In....");
@@ -213,7 +213,7 @@ GoogleSignInClient mGoogleSignInClient;
                             startActivity(intent);
 
                         }
-                        if(selection.equals( "Service Provider" )){
+                        if(selection.equals( "ServiceProvider" )){
                             Intent intent = new Intent(LoginSignupActivity.this,SignupActivity.class);
                             intent.putExtra( "name", String.valueOf( "ServiceProvider" ) );
                             startActivity(intent);
@@ -265,8 +265,7 @@ GoogleSignInClient mGoogleSignInClient;
                                 hashMap.put("Email",email);
                                 hashMap.put("Id",uid);
                                 hashMap.put("Category",selection);
-                                hashMap.put("pic","\n" +
-                                        "https://firebasestorage.googleapis.com/v0/b/all4cars-2d23a.appspot.com/o/images%2F-LwmgwIpNqQq8NiaObWH?alt=media&token=80062648-a4e4-47fa-90bf-c3d7592a9aaf");
+                                hashMap.put("pic","https://firebasestorage.googleapis.com/v0/b/all4cars-2d23a.appspot.com/o/images%2F-LwmgwIpNqQq8NiaObWH?alt=media&token=80062648-a4e4-47fa-90bf-c3d7592a9aaf");
                                 hashMap.put("Name","Car4All");
 
                                 //firebase data instance
@@ -279,7 +278,7 @@ GoogleSignInClient mGoogleSignInClient;
                                 reference.child(uid).setValue(hashMap);
                             }
 
-                            if(selection.equals("Service Provider")) {
+                            if(selection.equals("ServiceProvider")) {
                                 Intent intent = new Intent(LoginSignupActivity.this, Profile.class);
                                 pd.dismiss();
                                 startActivity(intent);

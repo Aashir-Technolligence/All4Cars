@@ -112,7 +112,7 @@ public class SignupActivity extends AppCompatActivity {
 
 
                         }
-                        if (selection.equals( "Service Provider" )) {
+                        if (selection.equals( "ServiceProvider" )) {
 
                             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
                             pd.setMessage("Logging In....");
@@ -205,7 +205,7 @@ public class SignupActivity extends AppCompatActivity {
                                 hashMap.put("Email",email);
                                 hashMap.put("Id",uid);
                                 hashMap.put("Category",selection);
-                                hashMap.put("pic","");
+                                hashMap.put("pic","https://firebasestorage.googleapis.com/v0/b/all4cars-2d23a.appspot.com/o/images%2F-LwmgwIpNqQq8NiaObWH?alt=media&token=80062648-a4e4-47fa-90bf-c3d7592a9aaf");
                                 hashMap.put("Name","");
 
                                 //firebase data instance
@@ -271,7 +271,7 @@ public class SignupActivity extends AppCompatActivity {
 
                             reference.child(uid).child( "Name" ).setValue(Name);
                             reference.child(uid).child( "Email" ).setValue(Email);
-                            reference.child(uid).child( "pic" ).setValue("");
+                            reference.child(uid).child( "pic" ).setValue("https://firebasestorage.googleapis.com/v0/b/all4cars-2d23a.appspot.com/o/images%2F-LwmgwIpNqQq8NiaObWH?alt=media&token=80062648-a4e4-47fa-90bf-c3d7592a9aaf");
                             reference.child(uid).child( "Category" ).setValue(category);
                             reference.child(uid).child( "Id" ).setValue(uid);
 
