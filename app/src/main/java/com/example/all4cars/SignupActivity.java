@@ -57,12 +57,11 @@ public class SignupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_signup );
-        //getActionBar().hide();
 
         btnLogin=(Button)findViewById(R.id.btnLogin);
         btnSignup=(Button)findViewById(R.id.txtSignUp);
         txtEmail =(EditText)findViewById( R.id.editTextEmail ) ;
-        txtPassword = (EditText)findViewById( R.id.editTextPassword) ;
+        txtPassword = (EditText)findViewById( R.id.editTextPassword ) ;
         txtName= (EditText)findViewById( R.id.editTextName) ;
         mGoogleloginbtn=findViewById(R.id.googleloginbtn);
         final String arr[] = getResources().getStringArray(R.array.selection);
@@ -166,6 +165,86 @@ public class SignupActivity extends AppCompatActivity {
 
     }
 
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                firebaseAuthWithGoogle(account);
+            } catch (ApiException e) {
+                // Google Sign In failed, update UI appropriately
+                Toast.makeText(this,""+e.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            FirebaseUser user = mAuth.getCurrentUser();
+
+                            if (task.getResult().getAdditionalUserInfo().isNewUser()){
+                                String email=user.getEmail();
+                                String uid=user.getUid();
+                                HashMap<Object, String> hashMap=new HashMap<>();
+                                hashMap.put("Email",email);
+                                hashMap.put("Id",uid);
+                                hashMap.put("Category",selection);
+                                hashMap.put("pic","");
+                                hashMap.put("Name","");
+
+                                //firebase data instance
+                                FirebaseDatabase database=FirebaseDatabase.getInstance();
+
+                                //path to store user data named 'Users'
+                                DatabaseReference reference=database.getReference("Users");
+
+                                //PUT Data within hashmap in database
+                                reference.child(uid).setValue(hashMap);
+                            }
+
+                            if(selection.equals("ServiceProvider")) {
+                                Intent intent = new Intent(SignupActivity.this, Profile.class);
+                                pd.dismiss();
+                                startActivity(intent);
+                                finish();
+                            }
+                            else{
+                                Intent intent = new Intent(SignupActivity.this, MainActivity.class);
+                                intent.putExtra("ServiceId", "Empty");
+                                pd.dismiss();
+                                startActivity(intent);
+                                finish();
+                            }
+
+                            // updateUI(user);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Toast.makeText(SignupActivity.this, "Login Failed...", Toast.LENGTH_SHORT).show();
+
+                            //  updateUI(null);
+                        }
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                //GETAND SHOW ERROR
+                Toast.makeText(SignupActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
     private void registeruser(final String email, String password, final String name) {
         progressDialog.show();
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
@@ -186,6 +265,7 @@ public class SignupActivity extends AppCompatActivity {
 
                             reference.child(uid).child( "Name" ).setValue(Name);
                             reference.child(uid).child( "Email" ).setValue(Email);
+                            reference.child(uid).child( "pic" ).setValue("");
                             reference.child(uid).child( "Category" ).setValue(category);
                             reference.child(uid).child( "Id" ).setValue(uid);
 

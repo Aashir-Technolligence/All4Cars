@@ -15,7 +15,6 @@ public class SplashScreenForCarServices extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_splash_screen_for_car_services );
-        //getActionBar().hide();
 
 
         ImageView imageView = findViewById( R.id.imagelogo );

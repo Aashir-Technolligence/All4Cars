@@ -2,20 +2,15 @@ package com.example.all4cars;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
-import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.LightingColorFilter;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
@@ -45,8 +40,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthCredential;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 
@@ -58,6 +56,7 @@ public class LoginSignupActivity extends AppCompatActivity  {
     TextView mRecoverPasswordtv;
     SignInButton mGoogleloginbtn;
     private String selection;
+    String category;
 //  final   Context context;
     ProgressDialog pd;
     private FirebaseAuth mAuth;
@@ -69,12 +68,10 @@ GoogleSignInClient mGoogleSignInClient;
 
 
 
-    @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_login_signup );
-        //getActionBar().hide();
 
         pd=new ProgressDialog(this);
         pd.setMessage("Logging In..... ");
@@ -101,11 +98,7 @@ GoogleSignInClient mGoogleSignInClient;
                 showRecoverPasswordDialog();
             }
         });
-        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            recreate();
-            return;
-        }
+
 //        mAuth = FirebaseAuth.getInstance(  );
 //        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions
 //                .Builder()
@@ -258,6 +251,7 @@ GoogleSignInClient mGoogleSignInClient;
                                 hashMap.put("Email",email);
                                 hashMap.put("Id",uid);
                                 hashMap.put("Category",selection);
+                                hashMap.put("pic","");
                                 hashMap.put("Name","");
 
                                 //firebase data instance
@@ -270,10 +264,19 @@ GoogleSignInClient mGoogleSignInClient;
                                 reference.child(uid).setValue(hashMap);
                             }
 
-                            Intent intent =  new Intent(LoginSignupActivity.this,MainActivity.class);
-                          pd.dismiss();
-                            startActivity(intent);
-                            finish();
+                            if(selection.equals("Service Provider")) {
+                                Intent intent = new Intent(LoginSignupActivity.this, Profile.class);
+                                pd.dismiss();
+                                startActivity(intent);
+                                finish();
+                            }
+                            else{
+                                Intent intent = new Intent(LoginSignupActivity.this, MainActivity.class);
+                                intent.putExtra("ServiceId", "Empty");
+                                pd.dismiss();
+                                startActivity(intent);
+                                finish();
+                            }
 
                             // updateUI(user);
                         } else {
@@ -307,9 +310,30 @@ GoogleSignInClient mGoogleSignInClient;
                             pd.dismiss();
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
-                            startActivity(new Intent(LoginSignupActivity.this,MainActivity.class));
-                            finish();
+                            String id=user.getUid();
+                            dref.child("Users").child(id).addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    category=dataSnapshot.child("Category").getValue().toString();
 
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+                            if(category.equals("ServiceProvider")) {
+                                startActivity(new Intent(LoginSignupActivity.this, Profile.class));
+                                finish();
+                            }
+                            else{
+                                Intent intent = new Intent(LoginSignupActivity.this, MainActivity.class);
+                                intent.putExtra("ServiceId", "Empty");
+                                startActivity(intent);
+                                finish();
+
+                            }
                         } else {
                             pd.dismiss();
                             // If sign in fails, display a message to the user.

@@ -127,12 +127,38 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(final GoogleMap googleMap) {
         String serviceId=getIntent().getStringExtra("ServiceId");
-//        if(!serviceId.equals("")){
-//
-//
-//
-//        }
-//        else
+        if(serviceId.equals("Empty")){
+
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+            mFusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location1) {
+                            // Got last known location. In some rare situations this can be null.
+                            if (location1 != null) {
+                                // Logic to handle location object
+
+                                longitude = location1.getLongitude();
+                                latitude = location1.getLatitude();
+                                lati = (String.valueOf(latitude));
+                                loni = (String.valueOf(longitude));
+
+                                //showing on map
+                                LatLng latLng = new LatLng(latitude, longitude);
+                                googleMap.addMarker(new MarkerOptions().position(latLng).title("Your location"));
+                                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18), 4000, null);
+                            } else {
+
+                                Snackbar.make(drawerLayout, "Please allow location to this app", Snackbar.LENGTH_LONG).show();
+                            }
+
+
+                        }
+                    });
+
+        }
+        else
         {
             dref.child("Services").addValueEventListener(new ValueEventListener() {
                 @Override
@@ -153,33 +179,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         }
 
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        mFusedLocationClient.getLastLocation()
-                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location1) {
-                        // Got last known location. In some rare situations this can be null.
-                        if (location1 != null) {
-                            // Logic to handle location object
 
-                            longitude = location1.getLongitude();
-                            latitude = location1.getLatitude();
-                            lati = (String.valueOf(latitude));
-                            loni = (String.valueOf(longitude));
-
-                            //showing on map
-                            LatLng latLng = new LatLng(latitude, longitude);
-                            googleMap.addMarker(new MarkerOptions().position(latLng).title("Your location"));
-                            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18), 4000, null);
-                        } else {
-
-                            Snackbar.make(drawerLayout, "Please allow location to this app", Snackbar.LENGTH_LONG).show();
-                        }
-
-
-                    }
-                });
     }
 
     //drawer open close click
