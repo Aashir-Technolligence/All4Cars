@@ -139,12 +139,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
 
-    @SuppressLint("RestrictedApi")
     @Override
     public void onMapReady(final GoogleMap googleMap) {
         String serviceId=getIntent().getStringExtra("ServiceId");
         if(serviceId.equals("Empty")){
-            floatingActionButton.setVisibility(View.GONE);
 
             imageView.setVisibility(View.GONE);
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
