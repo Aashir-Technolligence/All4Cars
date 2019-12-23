@@ -20,12 +20,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -47,8 +50,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     DrawerLayout drawerLayout;
     TextView name,email;
     ImageView imageView;
+    String lati, loni;
+    Double latitude = 0.0, longitude = 0.0;
     FloatingActionButton floatingActionButton;
     ActionBarDrawerToggle drawerToggle;
+    FusedLocationProviderClient mFusedLocationClient;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         dref.child("Users").child(currentUser).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                name.setText(dataSnapshot.child("name").getValue().toString());
+                name.setText(dataSnapshot.child("Name").getValue().toString());
                 email.setText(dataSnapshot.child("Email").getValue().toString());
                 Picasso.get().load(dataSnapshot.child( "pic" ).getValue().toString()).into(imageView);
             }
@@ -119,31 +125,56 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
-        //GetLocation();
-        Criteria criteria = new Criteria();
-        provider = locationManager.getBestProvider(criteria, false);
-        if (ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,new String[]
-                    {Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
+    public void onMapReady(final GoogleMap googleMap) {
+        String serviceId=getIntent().getStringExtra("ServiceId");
+        if(!serviceId.equals("")){
+
+
+
         }
-        Location location = locationManager.getLastKnownLocation(provider);
-        if (location!=null){
-            double lat= location.getLatitude();
-            double lon=location.getLongitude();
+        else {
+            dref.child("Services").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-            //showing on map
-            LatLng latLng = new LatLng(lat, lon);
-            Toast.makeText(this, " "+lat+" "+lon, Toast.LENGTH_LONG).show();
-            googleMap.addMarker(new MarkerOptions().position(latLng).title("Your location"));
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,18),4000,null);
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
         }
-        else{
 
-            Snackbar.make(drawerLayout, "Please allow location to this app", Snackbar.LENGTH_LONG).show();
-        }
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        mFusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location1) {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location1 != null) {
+                            // Logic to handle location object
+
+                            longitude = location1.getLongitude();
+                            latitude = location1.getLatitude();
+                            lati = (String.valueOf(latitude));
+                            loni = (String.valueOf(longitude));
+
+                            //showing on map
+                            LatLng latLng = new LatLng(latitude, longitude);
+                            googleMap.addMarker(new MarkerOptions().position(latLng).title("Your location"));
+                            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18), 4000, null);
+                        } else {
+
+                            Snackbar.make(drawerLayout, "Please allow location to this app", Snackbar.LENGTH_LONG).show();
+                        }
 
 
+                    }
+                });
     }
 
     //drawer open close click
@@ -155,17 +186,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         return super.onOptionsItemSelected(item);
     }
 
-    private double GetLocation(){
-        //Location locationNetwork=locationManager.getLastKnownLocation(NETW)
-        return 2.2;
-    }
 
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.Benzinarie: {
-                Snackbar.make(drawerLayout, "Car Wash", Snackbar.LENGTH_LONG).show();
+                Intent intent=new Intent(this,MainActivity.class);
+                intent.putExtra("ServiceId","Benzinarie");
+                startActivity(intent);
                 break;
             }
             case R.id.Decarbonizare: {

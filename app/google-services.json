@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "463397911202-m81sbpacqlop41bv41nkb5aprcbiqocm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.all4cars",
+            "certificate_hash": "94d4ec20b0326968b84dc86e59af1337211c0634"
+          }
+        },
+        {
           "client_id": "463397911202-9fpi20emikpvikr6rf5j02pkii6o5vfs.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
