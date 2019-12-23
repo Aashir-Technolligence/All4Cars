@@ -88,7 +88,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
                 String serviceId=getIntent().getStringExtra("ServiceId");
-                Snackbar.make(drawerLayout,""+serviceId,Snackbar.LENGTH_LONG).show();
+                if(serviceId==null)
+                Snackbar.make(drawerLayout,"Select Service First",Snackbar.LENGTH_LONG).show();
+                else{
+                    Snackbar.make(drawerLayout,""+serviceId,Snackbar.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -117,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onClick(View v) {
                 String skip=getIntent().getStringExtra("ServiceId");
                 if(skip.equals("Skip")){
-                    Snackbar.make(drawerLayout, "Please Login First", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(drawerLayout, "You must have account", Snackbar.LENGTH_LONG).show();
 
                 }
                 else {
