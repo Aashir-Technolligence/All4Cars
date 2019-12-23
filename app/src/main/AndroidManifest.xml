@@ -45,7 +45,8 @@
         <activity android:name=".LoginSignupActivity">
 
         </activity>
-        <activity android:name=".SignupActivity" />
+        <activity android:name=".SignupActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity android:name=".SplashScreenForCarServices" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

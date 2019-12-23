@@ -68,7 +68,6 @@ GoogleSignInClient mGoogleSignInClient;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_login_signup );
-        getActionBar().hide();
 
         pd=new ProgressDialog(this);
         pd.setMessage("Logging In..... ");
@@ -248,6 +247,7 @@ GoogleSignInClient mGoogleSignInClient;
                                 hashMap.put("Email",email);
                                 hashMap.put("Id",uid);
                                 hashMap.put("Category",selection);
+                                hashMap.put("pic","");
                                 hashMap.put("Name","");
 
                                 //firebase data instance
