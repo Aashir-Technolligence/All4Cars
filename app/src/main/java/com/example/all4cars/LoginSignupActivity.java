@@ -310,12 +310,22 @@ GoogleSignInClient mGoogleSignInClient;
                             pd.dismiss();
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
-                            String id=user.getUid();
-                            dref.child("Users").child(id).addValueEventListener(new ValueEventListener() {
+                            final String id=user.getUid();
+                            dref.child("Users").addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    category=dataSnapshot.child("Category").getValue().toString();
+                                    category=dataSnapshot.child(id).child("Category").getValue().toString();
+                                    if(category.equals("ServiceProvider")) {
+                                        startActivity(new Intent(LoginSignupActivity.this, Profile.class));
+                                        finish();
+                                    }
+                                    else{
+                                        Intent intent = new Intent(LoginSignupActivity.this, MainActivity.class);
+                                        intent.putExtra("ServiceId", "Empty");
+                                        startActivity(intent);
+                                        finish();
 
+                                    }
                                 }
 
                                 @Override
@@ -323,17 +333,7 @@ GoogleSignInClient mGoogleSignInClient;
 
                                 }
                             });
-                            if(category.equals("ServiceProvider")) {
-                                startActivity(new Intent(LoginSignupActivity.this, Profile.class));
-                                finish();
-                            }
-                            else{
-                                Intent intent = new Intent(LoginSignupActivity.this, MainActivity.class);
-                                intent.putExtra("ServiceId", "Empty");
-                                startActivity(intent);
-                                finish();
 
-                            }
                         } else {
                             pd.dismiss();
                             // If sign in fails, display a message to the user.
