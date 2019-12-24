@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -180,7 +181,7 @@ public class ServiceDetail extends AppCompatActivity {
 
             public void onClick(DialogInterface dialog, int which) {
 
-                String currentUser = "1";
+                final String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 final String push = FirebaseDatabase.getInstance().getReference().child("Rating").push().getKey();
                 Rating_Attr rating_attr = new Rating_Attr();
                 rating_attr.setId(push);

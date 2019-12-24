@@ -13,13 +13,13 @@
         android:layout_height="200dp"
         android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:background="@color/colorPrimary">
+        >
 
         <ImageView
             android:id="@+id/serviceImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/ic_location_on_black_24dp"
+            android:src="@drawable/ic_sync_problem_black_24dp"
             android:adjustViewBounds="true"
             />
 
