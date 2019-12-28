@@ -66,7 +66,19 @@ GoogleSignInClient mGoogleSignInClient;
     DatabaseReference dref= FirebaseDatabase.getInstance().getReference();
 
 
-
+    @Override
+    public void onBackPressed() {
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder( this );
+        alertDialogBuilder.setMessage( "Are you sure want to exit?" ).setPositiveButton( "Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+            finish();
+            }
+        } ).setNegativeButton( "Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        } ).show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +117,8 @@ GoogleSignInClient mGoogleSignInClient;
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginSignupActivity.this,MainActivity.class);
-                intent.putExtra( "ServiceId","Skip" );
+                intent.putExtra( "ServiceId","Empty" );
+                intent.putExtra( "user","Skip" );
                 startActivity(intent);
 
 

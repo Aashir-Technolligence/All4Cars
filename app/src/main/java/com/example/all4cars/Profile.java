@@ -1,15 +1,16 @@
 package com.example.all4cars;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -19,6 +20,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import java.util.Locale;
 
 public class Profile extends AppCompatActivity {
     ImageView imageView;
@@ -45,7 +48,7 @@ public class Profile extends AppCompatActivity {
 //                if(view.getParent()!=null)
 //                    ((ViewGroup)view.getParent()).removeView(view); // <- fix
                 ProfileDialog profileDialog =new ProfileDialog();
-                profileDialog.show(getSupportFragmentManager(),"Example Dialog");
+                profileDialog.show(getSupportFragmentManager(),"Example Dialog" );
             }
         });
         FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
@@ -82,8 +85,28 @@ public class Profile extends AppCompatActivity {
         LayoutViewService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Profile.this,ViewServices.class));
+                Intent i = new Intent(Profile.this , ViewServices.class);
+                i.putExtra("Id" , "SP");
+                startActivity(i);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (category.equals( "Customer" )) {
+            final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder( this );
+            alertDialogBuilder.setMessage( "Are you sure want to logout?" ).setPositiveButton( "Yes", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    startActivity( new Intent( Profile.this, LoginSignupActivity.class ) );
+                }
+            } ).setNegativeButton( "No", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            } ).show();
+        } else {
+            super.onBackPressed();
+        }
     }
 }

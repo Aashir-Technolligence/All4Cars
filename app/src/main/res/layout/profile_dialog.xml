@@ -25,6 +25,10 @@
             android:hint="John Smith"
             android:backgroundTint="@color/colorBlack"
             android:textSize="25dp"></EditText>
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/pro"/>
 
        </LinearLayout>
 

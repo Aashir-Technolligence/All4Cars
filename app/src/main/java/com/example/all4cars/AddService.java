@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -62,6 +63,7 @@ public class AddService extends AppCompatActivity {
     DatabaseReference reference;
     FusedLocationProviderClient mFusedLocationClient;
     int count = 0;
+    ProgressDialog pd;
 
 
     @RequiresApi(api = Build.VERSION_CODES.P)
@@ -74,11 +76,14 @@ public class AddService extends AppCompatActivity {
         openTime = (EditText) findViewById(R.id.edtOpenTime);
         closeTime = (EditText) findViewById(R.id.edtCloseTime);
         phone = (EditText) findViewById(R.id.edtPhone);
-        progressBar = (ProgressBar) findViewById(R.id.addServiceProgress);
-        progressBar.setVisibility(View.GONE);
+        //progressBar = (ProgressBar) findViewById(R.id.addServiceProgress);
+        //progressBar.setVisibility(View.GONE);
         addService = (Button) findViewById(R.id.btnAddService);
         StorageRef = FirebaseStorage.getInstance().getReference();
         serviceSpinner = findViewById(R.id.spinnerService);
+
+        pd=new ProgressDialog(this);
+    pd.setMessage("Creating Service..... ");
         serviceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -169,15 +174,16 @@ public class AddService extends AppCompatActivity {
                 if (!companyName.getText().toString().isEmpty() && !openTime.getText().toString().isEmpty() && !closeTime.getText().toString().isEmpty()) {
                     if (count == 1) {
                         final String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                        progressBar.setVisibility(View.VISIBLE);
-                        Toast.makeText(getApplicationContext(), "Inserting Please wait", Toast.LENGTH_LONG).show();
+                        //progressBar.setVisibility(View.VISIBLE);
+                            pd.show();
+                        //Toast.makeText(getApplicationContext(), "Inserting Please wait", Toast.LENGTH_LONG).show();
                         final String push = FirebaseDatabase.getInstance().getReference().child("Services").push().getKey();
                         StorageReference fileReference = StorageRef.child("images/" + push);
                         fileReference.putFile(filePath)
                                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                     @Override
                                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                        Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_SHORT).show();
+                                        //Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_SHORT).show();
                                         if (filePath != null) {
                                             AddServiceAttr addServiceAttr = new AddServiceAttr();
                                             addServiceAttr.setId(push);
@@ -201,6 +207,7 @@ public class AddService extends AppCompatActivity {
 
                                             reference.child("Services").child(push)
                                                     .setValue(addServiceAttr);
+                                            pd.dismiss();
                                             Toast.makeText(getApplicationContext(), "Inserted", Toast.LENGTH_LONG).show();
 
                                         }
