@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/Asigurare-Auto"
+        android:title="Asigurare Auto"></item>
+    <item
+        android:id="@+id/Benzinarie"
+        android:title="Benzinarie"></item>
+    <item
+        android:id="@+id/Chip-Tunning"
+        android:title="Chip-Tunning"></item>
+    <item
+        android:id="@+id/Dealer-Auto_Parc-Auto"
+        android:title="Dealer Auto / Parc Auto"></item>
+    <item
+        android:id="@+id/Decarbonizare"
+        android:title="Decarbonizare"></item>
+    <item
+        android:id="@+id/Dezmembrari-Auto"
+        android:title="Dezmembrari Auto"></item>
+    <item
+        android:id="@+id/Diagnoza"
+        android:title="Diagnoza"></item>
+    <item
+        android:id="@+id/Geometrie-Roti"
+        android:title="Geometrie Roti"></item>
+    <item
+        android:id="@+id/Incarcare-Clima"
+        android:title="Incarcare Clima"></item>
+    <item
+        android:id="@+id/Incarcare-Electrica"
+        android:title="Incarcare Electrica"></item>
+    <item
+        android:id="@+id/Inmatriculari"
+        android:title=" Inmatriculari"></item>
+    <item
+        android:id="@+id/ITP"
+        android:title="ITP"></item>
+    <item
+        android:id="@+id/Magazin-Piese-Auto"
+        android:title="Magazin Piese Auto"></item>
+    <item
+        android:id="@+id/Montaj-Folii"
+        android:title="Montaj Folii"></item>
+    <item
+        android:id="@+id/Parcare-Privata"
+        android:title="Parcare Privata"></item>
+    <item
+        android:id="@+id/Rent-A-Car"
+        android:title="Rent-A-Car"></item>
+    <item
+        android:id="@+id/Scoala-de-Soferi"
+        android:title="Scoala de Soferi"></item>
+    <item
+        android:id="@+id/Service-Auto"
+        android:title="Service Auto"></item>
+    <item
+        android:id="@+id/Service-GPL"
+        android:title="Service GPL"></item>
+    <item
+        android:id="@+id/Service-Rapid"
+        android:title="Service Rapid (Ulei, Filtre)"></item>
+    <item
+        android:id="@+id/Spalatorie-Auto"
+        android:title="Spalatorie Auto"></item>
+    <item
+        android:id="@+id/Statie-GPL"
+        android:title="Statie GPL"></item>
+    <item
+        android:id="@+id/Tinichigerie-Vopsitorie"
+        android:title="Tinichigerie / Vopsitorie"></item>
+    <item
+        android:id="@+id/Tractari"
+        android:title="Tractari"></item>
+    <item
+        android:id="@+id/Vulcanizare"
+        android:title="Vulcanizare"></item>
+
+</menu>
+
