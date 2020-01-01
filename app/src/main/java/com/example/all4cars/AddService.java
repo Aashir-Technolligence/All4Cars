@@ -64,7 +64,7 @@ public class AddService extends AppCompatActivity {
     int count = 0;
 
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+    @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -177,7 +177,7 @@ public class AddService extends AppCompatActivity {
                                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                     @Override
                                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                        //Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(), "Uploaded", Toast.LENGTH_SHORT).show();
                                         if (filePath != null) {
                                             AddServiceAttr addServiceAttr = new AddServiceAttr();
                                             addServiceAttr.setId(push);
@@ -193,6 +193,7 @@ public class AddService extends AppCompatActivity {
                                             addServiceAttr.setPhone(phone.getText().toString());
                                             addServiceAttr.setRating(Float.valueOf((float) 0.0));
                                             addServiceAttr.setTotal(0);
+
                                             addServiceAttr.setUserID(id);
                                             addServiceAttr.setLatitude(lati);
                                             addServiceAttr.setLongitude(loni);
@@ -200,7 +201,7 @@ public class AddService extends AppCompatActivity {
 
                                             reference.child("Services").child(push)
                                                     .setValue(addServiceAttr);
-                                            Toast.makeText(getApplicationContext(), "Your service is published.", Toast.LENGTH_LONG).show();
+                                            Toast.makeText(getApplicationContext(), "Inserted", Toast.LENGTH_LONG).show();
 
                                         }
                                     }

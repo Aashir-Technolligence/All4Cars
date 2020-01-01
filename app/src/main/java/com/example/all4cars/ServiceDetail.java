@@ -181,7 +181,7 @@ public class ServiceDetail extends AppCompatActivity {
 
             public void onClick(DialogInterface dialog, int which) {
 
-                final String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 final String push = FirebaseDatabase.getInstance().getReference().child("Rating").push().getKey();
                 Rating_Attr rating_attr = new Rating_Attr();
                 rating_attr.setId(push);
