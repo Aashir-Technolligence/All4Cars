@@ -16,6 +16,7 @@ public class SplashScreenForCarServices extends AppCompatActivity {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_splash_screen_for_car_services );
 
+
         ImageView imageView = findViewById( R.id.imagelogo );
         Animation animation = AnimationUtils.loadAnimation( getApplicationContext(),R.anim.fade );
         imageView.startAnimation( animation );

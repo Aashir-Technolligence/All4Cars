@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">All4Cars</string>
+    <string name="close">Close</string>
+    <string name="open">Open</string>
     <string-array name="service_type">
         <item>Asigurare Auto</item>
         <item>Benzinarie</item>
@@ -30,7 +32,7 @@
     </string-array>
     <string-array name="selection">
     <item>Customer</item>
-    <item>Service Provider</item>
+    <item>ServiceProvider</item>
     </string-array>
     <string name="title_activity_direction_on_map">Map</string>
     <string name="facebook_app_id">788399878274786</string>
