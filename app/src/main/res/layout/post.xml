@@ -25,8 +25,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/txtService"
-            android:text="Name"
+            android:id="@+id/txtCompany"
+            android:text="Company"
             android:textSize="20dp"
             android:textColor="#000"
             />
@@ -71,8 +71,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/txtCompany"
-            android:text="Company"
+            android:id="@+id/txtService"
+            android:text="Service"
             android:textSize="15dp"
             />
         <TextView
@@ -100,8 +100,8 @@
 </LinearLayout>
     </LinearLayout>
     <ImageView
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/imgService"
         android:scaleType="fitXY"
         android:layout_weight="1"

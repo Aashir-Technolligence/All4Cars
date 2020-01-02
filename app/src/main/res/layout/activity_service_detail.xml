@@ -21,11 +21,11 @@
         android:padding="10dp">
 
         <TextView
-            android:id="@+id/txtService"
+            android:id="@+id/txtCompanyName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Service"
-            android:textSize="30sp"
+            android:text="Company Name"
+            android:textSize="25sp"
             android:textStyle="bold" />
 
         <LinearLayout
@@ -73,12 +73,12 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/txtCompanyName"
+            android:id="@+id/txtService"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Company Name "
-            android:textSize="20sp"
+            android:text="Service "
+            android:textSize="25sp"
             android:textStyle="italic" />
 
     </LinearLayout>
