@@ -100,11 +100,10 @@
 </LinearLayout>
     </LinearLayout>
     <ImageView
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:id="@+id/imgService"
         android:layout_weight="1"
-        android:layout_margin="20dp"
         android:adjustViewBounds="true"/>
 </LinearLayout>
 

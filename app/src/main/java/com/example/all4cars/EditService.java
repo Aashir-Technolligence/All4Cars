@@ -88,9 +88,9 @@ public class EditService extends AppCompatActivity {
 
         pd = new ProgressDialog( this );
         pd.setMessage( "Creating Service..... " );
-         Intent i = getIntent();
-         final String serviceId = i.getStringExtra( "ServiceId" );
-        if (serviceId!=null) {
+        Intent i = getIntent();
+        final String serviceId = i.getStringExtra( "ServiceId" );
+        if (serviceId != null) {
             DatabaseReference dref = FirebaseDatabase.getInstance().getReference();
             dref.child( "Services" ).child( serviceId ).addListenerForSingleValueEvent( new ValueEventListener() {
                 @Override
@@ -102,7 +102,7 @@ public class EditService extends AppCompatActivity {
                     closeTime.setText( p.getCloseTime() );
                     phone.setText( p.getPhone() );
                     Picasso.get().load( p.getImage_url() ).into( image );
-                    newFilePath = dataSnapshot.child( "pic" ).getValue().toString();
+                    newFilePath = (p.getImage_url());
 
                 }
 
@@ -200,23 +200,22 @@ public class EditService extends AppCompatActivity {
 
                 if (!companyName.getText().toString().isEmpty() && !openTime.getText().toString().isEmpty() && !closeTime.getText().toString().isEmpty()) {
                     if (count == 0) {
-                        AddServiceAttr addServiceAttr = new AddServiceAttr();
-                        addServiceAttr.setCompanyName( companyName.getText().toString() );
-                        addServiceAttr.setService( service );
-                        addServiceAttr.setCloseTime( closeTime.getText().toString() );
-                        addServiceAttr.setOpenTime( openTime.getText().toString() );
-                        addServiceAttr.setLocation( addressString );
-                        addServiceAttr.setPhone( phone.getText().toString() );
-                        addServiceAttr.setLatitude( lati );
-                        addServiceAttr.setLongitude( loni );
+
+                        reference.child( "Services" ).child( serviceId ).child( "companyName" ).setValue( companyName.getText().toString() );
+                        reference.child( "Services" ).child( serviceId ).child( "closeTime" ).setValue( closeTime.getText().toString() );
+                        reference.child( "Services" ).child( serviceId ).child( "openTime" ).setValue( openTime.getText().toString() );
+                        reference.child( "Services" ).child( serviceId ).child( "location" ).setValue( addressString );
+                        reference.child( "Services" ).child( serviceId ).child( "phone" ).setValue( phone.getText().toString() );
+                        reference.child( "Services" ).child( serviceId ).child( "latitude" ).setValue( lati );
+                        reference.child( "Services" ).child( serviceId ).child( "longitude" ).setValue( loni );
 
 
-                        reference.child( "Services" ).child( serviceId )
-                                .setValue( addServiceAttr );
                         pd.dismiss();
-                        Toast.makeText( getApplicationContext(), "Inserted", Toast.LENGTH_LONG ).show();
-                    }
-                    if (count == 1) {
+                        Intent i = new Intent( EditService.this, ServiceDetail.class );
+                        i.putExtra( "Id", serviceId );
+                        startActivity( i );
+                        finish();
+                    } else if (count == 1) {
                         if (latitude != 0.0) {
 
 
@@ -237,19 +236,15 @@ public class EditService extends AppCompatActivity {
                                                 Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
                                                 while (!urlTask.isSuccessful()) ;
                                                 Uri downloadUrl = urlTask.getResult();
-                                                addServiceAttr.setImage_url( downloadUrl.toString() );
-                                                addServiceAttr.setCompanyName( companyName.getText().toString() );
-                                                addServiceAttr.setService( service );
-                                                addServiceAttr.setCloseTime( closeTime.getText().toString() );
-                                                addServiceAttr.setOpenTime( openTime.getText().toString() );
-                                                addServiceAttr.setLocation( addressString );
-                                                addServiceAttr.setPhone( phone.getText().toString() );
-                                                addServiceAttr.setLatitude( lati );
-                                                addServiceAttr.setLongitude( loni );
+                                                reference.child( "Services" ).child( serviceId ).child( "image_url" ).setValue( downloadUrl.toString());
+                                                reference.child( "Services" ).child( serviceId ).child( "companyName" ).setValue( companyName.getText().toString() );
+                                                reference.child( "Services" ).child( serviceId ).child( "closeTime" ).setValue( closeTime.getText().toString() );
+                                                reference.child( "Services" ).child( serviceId ).child( "openTime" ).setValue( openTime.getText().toString() );
+                                                reference.child( "Services" ).child( serviceId ).child( "location" ).setValue( addressString );
+                                                reference.child( "Services" ).child( serviceId ).child( "phone" ).setValue( phone.getText().toString() );
+                                                reference.child( "Services" ).child( serviceId ).child( "latitude" ).setValue( lati );
+                                                reference.child( "Services" ).child( serviceId ).child( "longitude" ).setValue( loni );
 
-
-                                                reference.child( "Services" ).child( serviceId )
-                                                        .setValue( addServiceAttr );
                                                 pd.dismiss();
                                                 Toast.makeText( getApplicationContext(), "Serivce Updated", Toast.LENGTH_LONG ).show();
 

@@ -113,6 +113,7 @@ public class ServiceDetail extends AppCompatActivity {
                                            Intent intent1=new Intent(ServiceDetail.this,EditService.class);
                                            intent1.putExtra( "ServiceId",serviceId );
                                            startActivity( intent1 );
+                                           finish();
                                        }
                                    } );
                                }
