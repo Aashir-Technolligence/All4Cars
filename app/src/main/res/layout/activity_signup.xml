@@ -5,7 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SignupActivity"
-    android:background="@mipmap/login1">
+    android:background="@drawable/log">
+    <ImageView
+        android:padding="10dp"
+        android:layout_width="135dp"
+        android:layout_height="135dp"
+        android:src="@drawable/cars"/>
 
 
     <Button

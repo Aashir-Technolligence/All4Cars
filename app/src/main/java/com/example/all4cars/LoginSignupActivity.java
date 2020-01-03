@@ -66,7 +66,19 @@ GoogleSignInClient mGoogleSignInClient;
     DatabaseReference dref= FirebaseDatabase.getInstance().getReference();
 
 
-
+    @Override
+    public void onBackPressed() {
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder( this );
+        alertDialogBuilder.setMessage( "Are you sure want to exit?" ).setPositiveButton( "Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+            finish();
+            }
+        } ).setNegativeButton( "Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        } ).show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +117,8 @@ GoogleSignInClient mGoogleSignInClient;
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginSignupActivity.this,MainActivity.class);
-                intent.putExtra( "ServiceId","Skip" );
+                intent.putExtra( "ServiceId","Empty" );
+                intent.putExtra( "user","Skip" );
                 startActivity(intent);
 
 
@@ -135,7 +148,11 @@ GoogleSignInClient mGoogleSignInClient;
                 AlertDialog.Builder dialog = new AlertDialog.Builder( LoginSignupActivity.this );
                 dialog.setCancelable( false );
                 dialog.setTitle( "SignUp as : " );
-                dialog.setSingleChoiceItems( R.array.selection, -1, new DialogInterface.OnClickListener() {
+                dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).setSingleChoiceItems( R.array.selection, -1, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         selection = arr[which];
@@ -157,8 +174,9 @@ GoogleSignInClient mGoogleSignInClient;
                         }
 
                     }
-                } );
-                dialog.show();
+                });
+               dialog.show();
+
 
 
             }
@@ -221,10 +239,12 @@ GoogleSignInClient mGoogleSignInClient;
                         }
                     }
                 } );
+                dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).show();
 
-
-                final AlertDialog alert = dialog.create();
-                alert.show();
 //                alert.getWindow().getDecorView().getBackground().setColorFilter(new LightingColorFilter(0xFF000000, CUSTOM_COLOR));
             }
         });
@@ -265,6 +285,12 @@ GoogleSignInClient mGoogleSignInClient;
                                 hashMap.put("Email",email);
                                 hashMap.put("Id",uid);
                                 hashMap.put("Category",selection);
+                                if(selection.equals( "ServiceProvider" )){
+                                    hashMap.put("Status","Pending");
+                                }
+                                else {
+                                    hashMap.put("Status","Client");
+                                }
                                 hashMap.put("pic","https://firebasestorage.googleapis.com/v0/b/all4cars-2d23a.appspot.com/o/images%2F-LwmgwIpNqQq8NiaObWH?alt=media&token=80062648-a4e4-47fa-90bf-c3d7592a9aaf");
                                 hashMap.put("Name","Car4All");
 

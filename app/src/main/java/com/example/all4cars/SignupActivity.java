@@ -205,6 +205,12 @@ public class SignupActivity extends AppCompatActivity {
                                 hashMap.put("Email",email);
                                 hashMap.put("Id",uid);
                                 hashMap.put("Category",selection);
+                                if(selection.equals( "ServiceProvider" )){
+                                    hashMap.put("Status","Pending");
+                                }
+                                else {
+                                    hashMap.put("Status","Client");
+                                }
                                 hashMap.put("pic","https://firebasestorage.googleapis.com/v0/b/all4cars-2d23a.appspot.com/o/images%2F-LwmgwIpNqQq8NiaObWH?alt=media&token=80062648-a4e4-47fa-90bf-c3d7592a9aaf");
                                 hashMap.put("Name","");
 
@@ -273,6 +279,12 @@ public class SignupActivity extends AppCompatActivity {
                             reference.child(uid).child( "Email" ).setValue(Email);
                             reference.child(uid).child( "pic" ).setValue("https://firebasestorage.googleapis.com/v0/b/all4cars-2d23a.appspot.com/o/images%2F-LwmgwIpNqQq8NiaObWH?alt=media&token=80062648-a4e4-47fa-90bf-c3d7592a9aaf");
                             reference.child(uid).child( "Category" ).setValue(category);
+                            if(category.equals( "ServiceProvider" )){
+                                reference.child(uid).child( "Status" ).setValue("Pending");
+                            }
+                            else {
+                                reference.child(uid).child( "Status" ).setValue("Client");
+                            }
                             reference.child(uid).child( "Id" ).setValue(uid);
 
 
@@ -302,5 +314,19 @@ public class SignupActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return super.onSupportNavigateUp();
+    }
+
+    @Override
+    public void onBackPressed() {
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder( this );
+        alertDialogBuilder.setMessage( "Are you sure want to exit?" ).setPositiveButton( "Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        } ).setNegativeButton( "Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        } ).show();
     }
 }
