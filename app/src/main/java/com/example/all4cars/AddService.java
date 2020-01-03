@@ -82,6 +82,7 @@ public class AddService extends AppCompatActivity {
         StorageRef = FirebaseStorage.getInstance().getReference();
         serviceSpinner = findViewById(R.id.spinnerService);
 
+
         pd=new ProgressDialog(this);
     pd.setMessage("Creating Service..... ");
         serviceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -173,6 +174,9 @@ public class AddService extends AppCompatActivity {
 
                 if (!companyName.getText().toString().isEmpty() && !openTime.getText().toString().isEmpty() && !closeTime.getText().toString().isEmpty()) {
                     if (count == 1) {
+                        if(latitude!=0.0) {
+
+
                         final String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
                         //progressBar.setVisibility(View.VISIBLE);
                             pd.show();
@@ -219,7 +223,11 @@ public class AddService extends AppCompatActivity {
                                         Toast.makeText(getApplicationContext(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 });
-                    } else {
+                    }
+                        else{
+                            Toast.makeText(getApplicationContext(), "We are unable to find your location, try again", Toast.LENGTH_SHORT).show();
+                        }
+                }else {
                         Toast.makeText(getApplicationContext(), "Please upload an image.", Toast.LENGTH_SHORT).show();
                     }
                 } else {

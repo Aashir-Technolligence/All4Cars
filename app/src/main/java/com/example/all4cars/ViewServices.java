@@ -46,7 +46,7 @@ public class ViewServices extends AppCompatActivity {
                         addServiceAttrs.add( p );
                     }
 
-                    recyclerView.setAdapter( new ViewServiceAdapter( addServiceAttrs, getApplicationContext() ) );
+                    recyclerView.setAdapter( new ViewServiceAdapter( addServiceAttrs, ViewServices.this ) );
 
 
                 }
@@ -69,10 +69,10 @@ public class ViewServices extends AppCompatActivity {
                     }
                     if (user != null) {
                         if (user.equals( "Skip" ))
-                            recyclerView.setAdapter( new ViewServiceAdapter( addServiceAttrs, "Skip", getApplicationContext() ) );
+                            recyclerView.setAdapter( new ViewServiceAdapter( addServiceAttrs, "Skip", ViewServices.this ) );
                     }
                     else
-                        recyclerView.setAdapter( new ViewServiceAdapter( addServiceAttrs, getApplicationContext() ) );
+                        recyclerView.setAdapter( new ViewServiceAdapter( addServiceAttrs, ViewServices.this ) );
 
                 }
 

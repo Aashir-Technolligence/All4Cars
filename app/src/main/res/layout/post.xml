@@ -64,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text=" renzil"
+                android:text=" Reviews"
                 android:textSize="10sp"
                 android:textStyle="normal" />
         </LinearLayout>
@@ -100,10 +100,9 @@
 </LinearLayout>
     </LinearLayout>
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:id="@+id/imgService"
-        android:scaleType="fitXY"
         android:layout_weight="1"
         android:layout_margin="20dp"
         android:adjustViewBounds="true"/>

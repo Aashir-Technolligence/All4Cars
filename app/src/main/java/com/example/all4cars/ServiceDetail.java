@@ -3,6 +3,7 @@ package com.example.all4cars;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,6 +13,7 @@ import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -21,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -44,7 +47,8 @@ public class ServiceDetail extends AppCompatActivity {
     RatingBar ratingBar;
     RecyclerView recyclerView;
     ArrayList<Rating_Attr> rating_attrs;
-    String serviceId;
+    String serviceId,userId;
+    FloatingActionButton editButton;
 
 
     @Override
@@ -53,6 +57,8 @@ public class ServiceDetail extends AppCompatActivity {
         setContentView( R.layout.activity_service_detail );
         service = (TextView) findViewById( R.id.txtService );
         company = (TextView) findViewById( R.id.txtCompanyName );
+        editButton=(FloatingActionButton ) findViewById( R.id.edit );
+        editButton.setVisibility(View.GONE);
         location = (TextView) findViewById( R.id.txtLocation );
         contact = (TextView) findViewById( R.id.txtCall );
         end = (TextView) findViewById( R.id.txtClose );
@@ -70,7 +76,7 @@ public class ServiceDetail extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance();
         ref = database.getReference( "Services" );
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
 
         final String check = intent.getStringExtra( "Id" );
         final String user = intent.getStringExtra( "user" );
@@ -92,6 +98,32 @@ public class ServiceDetail extends AppCompatActivity {
                         longitude = addService.getLongitude();
                         latitude = addService.getLatitude();
                         serviceId = addService.getId();
+                        userId=addService.getUserID();
+                        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                       database.getReference("Users").child( uid ).addValueEventListener( new ValueEventListener() {
+                           @Override
+                           public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                               String cat=dataSnapshot.child( "Category" ).getValue(  ).toString();
+                               if(cat.equals( "ServiceProvider" )){
+                                   editButton.setVisibility( View.VISIBLE );
+                                   reviewBtn.setVisibility( View.GONE );
+                                   editButton.setOnClickListener( new View.OnClickListener() {
+                                       @Override
+                                       public void onClick(View v) {
+                                           Intent intent1=new Intent(ServiceDetail.this,EditService.class);
+                                           intent1.putExtra( "ServiceId",serviceId );
+                                           startActivity( intent1 );
+                                       }
+                                   } );
+                               }
+                           }
+
+                           @Override
+                           public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                           }
+                       } );
+
                     }
                 }
             }

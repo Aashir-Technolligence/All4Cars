@@ -1,5 +1,6 @@
 package com.example.all4cars;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,16 +21,16 @@ import java.util.ArrayList;
 
 public class ViewServiceAdapter extends RecyclerView.Adapter<ViewServiceAdapter.ViewHolder> {
     ArrayList<AddServiceAttr> addServiceAttrs;
-    private Context context;
+    private ViewServices activity;
     private String user;
 
-    public ViewServiceAdapter(ArrayList<AddServiceAttr> addServiceAttrs, Context context) {
-        this.context = context;
+    public ViewServiceAdapter(ArrayList<AddServiceAttr> addServiceAttrs, ViewServices activity) {
+        this.activity = activity;
         this.addServiceAttrs = addServiceAttrs;
     }
 
-    public ViewServiceAdapter(ArrayList<AddServiceAttr> addServiceAttrs, String user, Context context) {
-        this.context = context;
+    public ViewServiceAdapter(ArrayList<AddServiceAttr> addServiceAttrs, String user, ViewServices activity) {
+        this.activity = activity;
         this.user = user;
         this.addServiceAttrs = addServiceAttrs;
     }
@@ -59,10 +60,10 @@ public class ViewServiceAdapter extends RecyclerView.Adapter<ViewServiceAdapter.
                         String serviceId = null;
                         serviceId = addServiceAttrs.get( position ).getId();
 
-                        Intent i = new Intent( context, ServiceDetail.class );
+                        Intent i = new Intent( activity, ServiceDetail.class );
                         i.putExtra( "Id", serviceId );
                         i.putExtra( "user", "Skip" );
-                        context.startActivity( i );
+                        activity.startActivity( i );
 
                     }
                 } );
@@ -73,10 +74,9 @@ public class ViewServiceAdapter extends RecyclerView.Adapter<ViewServiceAdapter.
                 public void onClick(View v) {
                     String serviceId = null;
                     serviceId = addServiceAttrs.get( position ).getId();
-
-                    Intent i = new Intent( context, ServiceDetail.class );
+                    Intent i = new Intent( activity, ServiceDetail.class );
                     i.putExtra( "Id", serviceId );
-                    context.startActivity( i );
+                    activity.startActivity( i );
 
                 }
             } );

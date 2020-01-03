@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -25,7 +26,7 @@ import java.util.Locale;
 
 public class Profile extends AppCompatActivity {
     ImageView imageView;
-    TextView name,email;
+    TextView name,email,message;
     String category;
     LinearLayout LayoutAddService,LayoutViewService;
     View view1,view2;
@@ -37,10 +38,12 @@ public class Profile extends AppCompatActivity {
         imageView =(ImageView) findViewById(R.id.profileImage);
         name=(TextView) findViewById(R.id.name);
         email=(TextView) findViewById(R.id.email);
+        message=(TextView) findViewById( R.id.message );
         LayoutAddService=(LinearLayout) findViewById(R.id.LayoutAddService);
         LayoutViewService=(LinearLayout) findViewById(R.id.LayoutViewServices);
         view1=(View) findViewById(R.id.view1);
         view2=(View) findViewById(R.id.view2);
+        message.setVisibility( View.GONE );
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,6 +61,16 @@ public class Profile extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 name.setText(dataSnapshot.child("Name").getValue().toString());
                 email.setText(dataSnapshot.child("Email").getValue().toString());
+                String status=dataSnapshot.child( "Status" ).getValue().toString();
+                if(!status.equals( "" )){
+                    if(status.equals( "Pending" )){
+                        LayoutAddService.setVisibility(View.GONE);
+                        LayoutViewService.setVisibility(View.GONE);
+                        view1.setVisibility(View.GONE);
+                        view2.setVisibility(View.GONE);
+                        message.setVisibility( View.VISIBLE );
+                    }
+                }
                 Picasso.get().load(dataSnapshot.child( "pic" ).getValue().toString()).into(imageView);
                 category=dataSnapshot.child("Category").getValue().toString();
                 if(category.equals("Customer")){
