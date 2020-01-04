@@ -79,7 +79,13 @@ public class SignupActivity extends AppCompatActivity {
         Intent in = getIntent();
         category = in.getStringExtra( "name" );
 
-
+        mHaveAccountTv.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent( SignupActivity.this,LoginSignupActivity.class );
+                startActivity( intent );
+            }
+        } );
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -106,7 +112,7 @@ public class SignupActivity extends AppCompatActivity {
 
 
                         }
-                        if (selection.equals( "Service Provider" )) {
+                        if (selection.equals( "ServiceProvider" )) {
 
                             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
                             pd.setMessage("Logging In....");
@@ -199,7 +205,13 @@ public class SignupActivity extends AppCompatActivity {
                                 hashMap.put("Email",email);
                                 hashMap.put("Id",uid);
                                 hashMap.put("Category",selection);
-                                hashMap.put("pic","");
+                                if(selection.equals( "ServiceProvider" )){
+                                    hashMap.put("Status","Pending");
+                                }
+                                else {
+                                    hashMap.put("Status","Client");
+                                }
+                                hashMap.put("pic","https://firebasestorage.googleapis.com/v0/b/all4cars-2d23a.appspot.com/o/images%2F-LwmgwIpNqQq8NiaObWH?alt=media&token=80062648-a4e4-47fa-90bf-c3d7592a9aaf");
                                 hashMap.put("Name","");
 
                                 //firebase data instance
@@ -265,8 +277,14 @@ public class SignupActivity extends AppCompatActivity {
 
                             reference.child(uid).child( "Name" ).setValue(Name);
                             reference.child(uid).child( "Email" ).setValue(Email);
-                            reference.child(uid).child( "pic" ).setValue("");
+                            reference.child(uid).child( "pic" ).setValue("https://firebasestorage.googleapis.com/v0/b/all4cars-2d23a.appspot.com/o/images%2F-LwmgwIpNqQq8NiaObWH?alt=media&token=80062648-a4e4-47fa-90bf-c3d7592a9aaf");
                             reference.child(uid).child( "Category" ).setValue(category);
+                            if(category.equals( "ServiceProvider" )){
+                                reference.child(uid).child( "Status" ).setValue("Pending");
+                            }
+                            else {
+                                reference.child(uid).child( "Status" ).setValue("Client");
+                            }
                             reference.child(uid).child( "Id" ).setValue(uid);
 
 
@@ -296,5 +314,19 @@ public class SignupActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return super.onSupportNavigateUp();
+    }
+
+    @Override
+    public void onBackPressed() {
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder( this );
+        alertDialogBuilder.setMessage( "Are you sure want to exit?" ).setPositiveButton( "Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        } ).setNegativeButton( "Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        } ).show();
     }
 }

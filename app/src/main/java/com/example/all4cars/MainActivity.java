@@ -3,6 +3,7 @@ package com.example.all4cars;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -28,6 +30,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -46,109 +49,120 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private static final int REQUEST_LOCATION = 0;
     LocationManager locationManager;
-            DatabaseReference dref = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference dref = FirebaseDatabase.getInstance().getReference();
     private String provider;
     DrawerLayout drawerLayout;
-    TextView name,email;
+    TextView name, email;
     ImageView imageView;
     String lati, loni;
     Double latitude = 0.0, longitude = 0.0;
     FloatingActionButton floatingActionButton;
     ActionBarDrawerToggle drawerToggle;
     FusedLocationProviderClient mFusedLocationClient;
+    String usr = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        drawerLayout= (DrawerLayout) findViewById(R.id.drawarLayout);
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-        floatingActionButton = (FloatingActionButton) findViewById(R.id.floatButton);
+        super.onCreate( savedInstanceState );
+        setContentView( R.layout.activity_main );
+        drawerLayout = (DrawerLayout) findViewById( R.id.drawarLayout );
+        locationManager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+        usr = getIntent().getStringExtra( "user" );
+        floatingActionButton = (FloatingActionButton) findViewById( R.id.floatButton );
         //adding drawar button
-        drawerToggle=new ActionBarDrawerToggle(this,drawerLayout,R.string.open,R.string.close);
-        drawerLayout.addDrawerListener(drawerToggle);
+        drawerToggle = new ActionBarDrawerToggle( this, drawerLayout, R.string.open, R.string.close );
+        drawerLayout.addDrawerListener( drawerToggle );
         drawerToggle.syncState();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled( true );
 
         //navbar item click
-        NavigationView navigationView=(NavigationView) findViewById(R.id.navigationView);
-        navigationView.setNavigationItemSelectedListener(this);
+        NavigationView navigationView = (NavigationView) findViewById( R.id.navigationView );
+        navigationView.setNavigationItemSelectedListener( this );
 
         //header click navbar
-        View headerview = navigationView.getHeaderView(0);
-        imageView=(ImageView) headerview.findViewById(R.id.profile_image);
-        name=(TextView) headerview.findViewById(R.id.name);
-        email=(TextView) headerview.findViewById(R.id.email);
+        View headerview = navigationView.getHeaderView( 0 );
+        imageView = (ImageView) headerview.findViewById( R.id.profile_image );
+        name = (TextView) headerview.findViewById( R.id.name );
+        email = (TextView) headerview.findViewById( R.id.email );
 
         //opening map fragment
-        SupportMapFragment supportMapFragment =(SupportMapFragment)
-                getSupportFragmentManager().findFragmentById(R.id.fragmentMap);
-        supportMapFragment.getMapAsync(MainActivity.this);
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+        SupportMapFragment supportMapFragment = (SupportMapFragment)
+                getSupportFragmentManager().findFragmentById( R.id.fragmentMap );
+        supportMapFragment.getMapAsync( MainActivity.this );
+        floatingActionButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String serviceId=getIntent().getStringExtra("ServiceId");
-                if(serviceId==null)
-                Snackbar.make(drawerLayout,"Select Service First",Snackbar.LENGTH_LONG).show();
-                else{
-                    Snackbar.make(drawerLayout,""+serviceId,Snackbar.LENGTH_LONG).show();
+                String serviceId = getIntent().getStringExtra( "ServiceId" );
+                if (serviceId.equals( "Empty" ))
+                    Snackbar.make( drawerLayout, "Select Service First", Snackbar.LENGTH_LONG ).show();
+                else {
+                    Snackbar.make( drawerLayout, "" + serviceId, Snackbar.LENGTH_LONG ).show();
+                    Intent i = new Intent( MainActivity.this, ViewServices.class );
+                    i.putExtra( "Id", serviceId );
+                    if (usr != null)
+                        if (usr.equals( "Skip" ))
+                            i.putExtra( "user", "Skip" );
+                    startActivity( i );
                 }
             }
-        });
+        } );
+        String serviceId = getIntent().getStringExtra( "Id" );
+//
+//        if (serviceId != null) {
+//            if (!serviceId.equals( "Skip" )) {
+        if (usr == null) {
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            String currentUser = user.getUid();
+            if (currentUser != null) {
+                dref.child( "Users" ).child( currentUser ).addValueEventListener( new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        name.setText( dataSnapshot.child( "Name" ).getValue().toString() );
+                        email.setText( dataSnapshot.child( "Email" ).getValue().toString() );
+                        Picasso.get().load( dataSnapshot.child( "pic" ).getValue().toString() ).into( imageView );
+//                        Picasso.get().load(profiledata.getIMAGEURL()).into(pimage);
+                    }
 
-        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
-        String currentUser=user.getUid();
-        if(currentUser==null) {
-            dref.child("Users").child(currentUser).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    name.setText(dataSnapshot.child("Name").getValue().toString());
-                    email.setText(dataSnapshot.child("Email").getValue().toString());
-                    Picasso.get().load(dataSnapshot.child("pic").getValue().toString()).into(imageView);
-                }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
+                    }
+                } );
+            }
         }
+//            }
+        //}
         //imageView.setImageResource();
 
         //profile img click
-        imageView.setOnClickListener(new View.OnClickListener() {
+        imageView.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String skip=getIntent().getStringExtra("ServiceId");
-                if(skip.equals("Skip")){
-                    Snackbar.make(drawerLayout, "You must have account", Snackbar.LENGTH_LONG).show();
+                String skip = getIntent().getStringExtra( "user" );
+                if (usr != null) {
+                    if (skip.equals( "Skip" )) {
+                        Snackbar.make( drawerLayout, "You must have account", Snackbar.LENGTH_LONG ).show();
 
+                    }
+                } else {
+                    startActivity( new Intent( MainActivity.this, Profile.class ) );
                 }
-                else {
-                    startActivity(new Intent(MainActivity.this, Profile.class));
-                }
-                }
-        });
-
+            }
+        } );
 
 
     }
 
 
-
-
-
-
     @Override
     public void onMapReady(final GoogleMap googleMap) {
-        String serviceId=getIntent().getStringExtra("ServiceId");
-        if(serviceId.equals("Empty")){
-
-            imageView.setVisibility(View.GONE);
-            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        String serviceId = getIntent().getStringExtra( "ServiceId" );
+        if (serviceId.equals( "Empty" )) {
+            imageView.setVisibility( View.GONE );
+            locationManager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+            mFusedLocationClient = LocationServices.getFusedLocationProviderClient( this );
             mFusedLocationClient.getLastLocation()
-                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    .addOnSuccessListener( this, new OnSuccessListener<Location>() {
                         @Override
                         public void onSuccess(Location location1) {
                             // Got last known location. In some rare situations this can be null.
@@ -157,42 +171,60 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                                 longitude = location1.getLongitude();
                                 latitude = location1.getLatitude();
-                                lati = (String.valueOf(latitude));
-                                loni = (String.valueOf(longitude));
+                                lati = (String.valueOf( latitude ));
+                                loni = (String.valueOf( longitude ));
 
                                 //showing on map
-                                LatLng latLng1 = new LatLng(latitude, longitude);
-                                googleMap.addMarker(new MarkerOptions().position(latLng1).title("Your location"));
-                                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng1, 18), 4000, null);
+                                LatLng latLng1 = new LatLng( latitude, longitude );
+                                googleMap.addMarker( new MarkerOptions().position( latLng1 ).title( "Your location" ) );
+                                googleMap.animateCamera( CameraUpdateFactory.newLatLngZoom( latLng1, 18 ), 4000, null );
                             } else {
 
-                                Snackbar.make(drawerLayout, "Please allow location to this app", Snackbar.LENGTH_LONG).show();
+                                Snackbar.make( drawerLayout, "Please allow location to this app", Snackbar.LENGTH_LONG ).show();
                             }
 
 
                         }
-                    });
+                    } );
 
-        }
-        else
-        {
-            dref.child("Services").addValueEventListener(new ValueEventListener() {
+        } else {
+            dref.child( "Services" ).orderByChild( "service" ).equalTo( serviceId ).addValueEventListener( new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for(DataSnapshot ds : dataSnapshot.getChildren()){
-                        AddServiceAttr addServiceAttr=ds.getValue(AddServiceAttr.class);
-                        LatLng latLng=new LatLng(Double.valueOf(addServiceAttr.getLatitude()), Double.valueOf(addServiceAttr.getLongitude()));
-                        googleMap.addMarker(new MarkerOptions().position(latLng).title(addServiceAttr.getId()));
-                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18), 4000, null);
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        AddServiceAttr addServiceAttr = ds.getValue( AddServiceAttr.class );
+                        LatLng latLng = new LatLng( Double.valueOf( addServiceAttr.getLatitude() ), Double.valueOf( addServiceAttr.getLongitude() ) );
+                        googleMap.addMarker( new MarkerOptions().position( latLng ).title( addServiceAttr.getId() ) );
+                        googleMap.animateCamera( CameraUpdateFactory.newLatLngZoom( latLng, 18 ), 4000, null );
 
                     }
-               }
+
+                    googleMap.setOnMarkerClickListener( new GoogleMap.OnMarkerClickListener() {
+                        @Override
+                        public boolean onMarkerClick(Marker marker) {
+                            marker.hideInfoWindow();
+
+                            String serviceId = null;
+                            serviceId = marker.getTitle();
+
+                            Intent i = new Intent( MainActivity.this, ServiceDetail.class );
+                            i.putExtra( "Id", serviceId );
+                            if (usr != null)
+                                if (usr.equals( "Skip" ))
+                                    i.putExtra( "user", "Skip" );
+                            startActivity( i );
+
+                            return false;
+                        }
+                    } );
+
+                }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
 
                 }
-            });
+            } );
 
         }
 
@@ -202,39 +234,258 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     //drawer open close click
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(drawerToggle.onOptionsItemSelected(item)){
+        if (drawerToggle.onOptionsItemSelected( item )) {
             return true;
         }
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected( item );
     }
 
 
+    @Override
+    public void onBackPressed() {
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder( this );
+        alertDialogBuilder.setMessage( "Are you sure want to logout?" ).setPositiveButton( "Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                startActivity( new Intent( MainActivity.this, LoginSignupActivity.class ) );
+            }
+        } ).setNegativeButton( "No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        } ).show();
+    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
+
+            case R.id.Asigurare_Auto: {
+                Intent intent = new Intent( this, MainActivity.class );
+                intent.putExtra( "ServiceId", "Asigurare Auto" );
+                if (usr != null)
+                    if (usr.equals( "Skip" ))
+                        intent.putExtra( "user", "Skip" );
+                startActivity( intent );
+                break;
+            }
             case R.id.Benzinarie: {
-                Intent intent=new Intent(this,MainActivity.class);
-                intent.putExtra("ServiceId","Asigurare Auto");
-                startActivity(intent);
+                Intent intent = new Intent( this, MainActivity.class );
+                intent.putExtra( "ServiceId", "Benzinarie" );
+                if (usr != null)
+                    if (usr.equals( "Skip" ))
+                        intent.putExtra( "user", "Skip" );
+                startActivity( intent );
+                break;
+            }
+            case R.id.Chip_Tunning: {
+                Intent intent = new Intent( this, MainActivity.class );
+                intent.putExtra( "ServiceId", "Chip-Tunning" );
+                if (usr != null)
+                    if (usr.equals( "Skip" ))
+                        intent.putExtra( "user", "Skip" );
+                startActivity( intent );
+                break;
+            }
+            case R.id.Dealer_Auto_Parc_Auto: {
+                Intent intent = new Intent( this, MainActivity.class );
+                intent.putExtra( "ServiceId", "Dealer Auto / Parc Auto" );
+                if (usr != null)
+                    if (usr.equals( "Skip" ))
+                        intent.putExtra( "user", "Skip" );
+                startActivity( intent );
                 break;
             }
             case R.id.Decarbonizare: {
-                Intent intent=new Intent(this,MainActivity.class);
-                intent.putExtra("ServiceId","Chip-Tunning");
-                startActivity(intent);
+                Intent intent = new Intent( this, MainActivity.class );
+                intent.putExtra( "ServiceId", "Decarbonizare" );
+                if (usr != null)
+                    if (usr.equals( "Skip" ))
+                        intent.putExtra( "user", "Skip" );
+                startActivity( intent );
+                break;
+            }
+            case R.id.Dezmembrari_Auto: {
+                Intent intent = new Intent( this, MainActivity.class );
+                intent.putExtra( "ServiceId", "Dezmembrari auto" );
+                if (usr != null)
+                    if (usr.equals( "Skip" ))
+                        intent.putExtra( "user", "Skip" );
+                startActivity( intent );
                 break;
             }
             case R.id.Diagnoza: {
-                Snackbar.make(drawerLayout, "Punctur", Snackbar.LENGTH_LONG).show();
+                Intent intent = new Intent( this, MainActivity.class );
+                intent.putExtra( "ServiceId", "Diagnoza" );
+                if (usr != null)
+                    if (usr.equals( "Skip" ))
+                        intent.putExtra( "user", "Skip" );
+                startActivity( intent );
                 break;
-
+            }
+            case R.id.Geometrie_Roti: {
+                Intent intent = new Intent( this, MainActivity.class );
+                intent.putExtra( "ServiceId", "Geometrie roti" );
+                if (usr != null)
+                    if (usr.equals( "Skip" ))
+                        intent.putExtra( "user", "Skip" );
+                startActivity( intent );
+                break;
+            }
+            case R.id.Incarcare_Clima: {
+                Intent intent = new Intent( this, MainActivity.class );
+                intent.putExtra( "ServiceId", "Incarcare Clima" );
+                if (usr != null)
+                    if (usr.equals( "Skip" ))
+                        intent.putExtra( "user", "Skip" );
+                startActivity( intent );
+                break;
+            }
+            case R.id.Incarcare_Electrica: {
+                Intent intent = new Intent( this, MainActivity.class );
+                intent.putExtra( "ServiceId", "Incarcare electrica" );
+                if (usr != null)
+                    if (usr.equals( "Skip" ))
+                        intent.putExtra( "user", "Skip" );
+                startActivity( intent );
+                break;
             }
             case R.id.Inmatriculari: {
-                Snackbar.make(drawerLayout, "Punctur", Snackbar.LENGTH_LONG).show();
+                Intent intent = new Intent( this, MainActivity.class );
+                intent.putExtra( "ServiceId", "Inmatriculari" );
+                if (usr != null)
+                    if (usr.equals( "Skip" ))
+                        intent.putExtra( "user", "Skip" );
+                startActivity( intent );
                 break;
-
             }
+            case R.id.ITP: {
+                Intent intent = new Intent( this, MainActivity.class );
+                intent.putExtra( "ServiceId", "ITP" );
+                if (usr != null)
+                    if (usr.equals( "Skip" ))
+                        intent.putExtra( "user", "Skip" );
+                startActivity( intent );
+                break;
+            }
+            case R.id.Magazin_Piese_Auto: {
+                Intent intent = new Intent( this, MainActivity.class );
+                intent.putExtra( "ServiceId", "Magazin piese auto" );
+                if (usr != null)
+                    if (usr.equals( "Skip" ))
+                        intent.putExtra( "user", "Skip" );
+                startActivity( intent );
+                break;
+            }
+            case R.id.Montaj_Folii: {
+                Intent intent = new Intent( this, MainActivity.class );
+                intent.putExtra( "ServiceId", "Montaj Folii" );
+                if (usr != null)
+                    if (usr.equals( "Skip" ))
+                        intent.putExtra( "user", "Skip" );
+                startActivity( intent );
+                break;
+            }
+            case R.id.Parcare_Privata: {
+                Intent intent = new Intent( this, MainActivity.class );
+                intent.putExtra( "ServiceId", "Parcare privata" );
+                if (usr != null)
+                    if (usr.equals( "Skip" ))
+                        intent.putExtra( "user", "Skip" );
+                startActivity( intent );
+                break;
+            }
+            case R.id.Rent_A_Car: {
+                Intent intent = new Intent( this, MainActivity.class );
+                intent.putExtra( "ServiceId", "Rent-a-car" );
+                if (usr != null)
+                    if (usr.equals( "Skip" ))
+                        intent.putExtra( "user", "Skip" );
+                startActivity( intent );
+                break;
+            }
+            case R.id.Scoala_de_Soferi: {
+                Intent intent = new Intent( this, MainActivity.class );
+                intent.putExtra( "ServiceId", "Scoala de soferi" );
+                if (usr != null)
+                    if (usr.equals( "Skip" ))
+                        intent.putExtra( "user", "Skip" );
+                startActivity( intent );
+                break;
+            }
+            case R.id.Service_Auto: {
+                Intent intent = new Intent( this, MainActivity.class );
+                intent.putExtra( "ServiceId", "Service auto" );
+                if (usr != null)
+                    if (usr.equals( "Skip" ))
+                        intent.putExtra( "user", "Skip" );
+                startActivity( intent );
+                break;
+            }
+            case R.id.Service_GPL: {
+                Intent intent = new Intent( this, MainActivity.class );
+                intent.putExtra( "ServiceId", "Service GPL" );
+                if (usr != null)
+                    if (usr.equals( "Skip" ))
+                        intent.putExtra( "user", "Skip" );
+                startActivity( intent );
+                break;
+            }
+            case R.id.Service_Rapid: {
+                Intent intent = new Intent( this, MainActivity.class );
+                intent.putExtra( "ServiceId", "Service rapid (Ulei, Filtre)" );
+                if (usr != null)
+                    if (usr.equals( "Skip" ))
+                        intent.putExtra( "user", "Skip" );
+                startActivity( intent );
+                break;
+            }
+            case R.id.Spalatorie_Auto: {
+                Intent intent = new Intent( this, MainActivity.class );
+                intent.putExtra( "ServiceId", "Spalatorie auto" );
+                if (usr != null)
+                    if (usr.equals( "Skip" ))
+                        intent.putExtra( "user", "Skip" );
+                startActivity( intent );
+                break;
+            }
+            case R.id.Statie_GPL: {
+                Intent intent = new Intent( this, MainActivity.class );
+                intent.putExtra( "ServiceId", "Statie GPL" );
+                if (usr != null)
+                    if (usr.equals( "Skip" ))
+                        intent.putExtra( "user", "Skip" );
+                startActivity( intent );
+                break;
+            }
+            case R.id.Tinichigerie_Vopsitorie: {
+                Intent intent = new Intent( this, MainActivity.class );
+                intent.putExtra( "ServiceId", "Tinichigerie / Vopsitorie" );
+                if (usr != null)
+                    if (usr.equals( "Skip" ))
+                        intent.putExtra( "user", "Skip" );
+                startActivity( intent );
+                break;
+            }
+            case R.id.Tractari: {
+                Intent intent = new Intent( this, MainActivity.class );
+                intent.putExtra( "ServiceId", "Tractari" );
+                if (usr != null)
+                    if (usr.equals( "Skip" ))
+                        intent.putExtra( "user", "Skip" );
+                startActivity( intent );
+                break;
+            }
+            case R.id.Vulcanizare: {
+                Intent intent = new Intent( this, MainActivity.class );
+                intent.putExtra( "ServiceId", "Vulcanizare" );
+                if (usr != null)
+                    if (usr.equals( "Skip" ))
+                        intent.putExtra( "user", "Skip" );
+                startActivity( intent );
+                break;
+            }
+
+
         }
         return false;
     }

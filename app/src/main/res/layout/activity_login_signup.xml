@@ -5,8 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LoginSignupActivity"
-    android:background="@mipmap/login1">
+    android:background="@drawable/log">
+    <ImageView
+        android:padding="10dp"
+        android:layout_width="135dp"
+        android:layout_height="135dp"
+        android:src="@drawable/cars"/>
 
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorBlue"
+        android:text="Skip"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_editor_absoluteY="0dp"
+        android:id="@+id/btnSkip"/>
 
     <Button
         android:id="@+id/btnLogin"

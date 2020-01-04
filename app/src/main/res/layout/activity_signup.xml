@@ -5,7 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SignupActivity"
-    android:background="@mipmap/login1">
+    android:background="@drawable/log">
+    <ImageView
+        android:padding="10dp"
+        android:layout_width="135dp"
+        android:layout_height="135dp"
+        android:src="@drawable/cars"/>
 
 
     <Button
@@ -196,6 +201,7 @@
         android:id="@+id/have_accounttv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="20dp"
         android:text="already have account?? Login"
         app:layout_constraintStart_toEndOf="@+id/googleloginbtn"
         app:layout_constraintTop_toBottomOf="@+id/txtSignUp"

@@ -50,7 +50,7 @@ import java.util.HashMap;
 
 public class LoginSignupActivity extends AppCompatActivity  {
     private static final int RC_SIGN_IN = 100;
-    private Button btnLogin,btnLogin2,btnSignup;
+    private Button btnLogin,btnLogin2,btnSignup,btnSkip;
     ImageView btnFacebook,btnGoole,btnTwitter;
     EditText emailValidate,password;
     TextView mRecoverPasswordtv;
@@ -66,7 +66,19 @@ GoogleSignInClient mGoogleSignInClient;
     DatabaseReference dref= FirebaseDatabase.getInstance().getReference();
 
 
-
+    @Override
+    public void onBackPressed() {
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder( this );
+        alertDialogBuilder.setMessage( "Are you sure want to exit?" ).setPositiveButton( "Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+            finish();
+            }
+        } ).setNegativeButton( "Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        } ).show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +93,7 @@ GoogleSignInClient mGoogleSignInClient;
         btnLogin=(Button)findViewById(R.id.btnLogin);
         btnLogin2=(Button)findViewById(R.id.button3);
         btnSignup=(Button)findViewById(R.id.btnSignup);
+        btnSkip = (Button)findViewById(R.id.btnSkip);
 //        btnFacebook = (ImageView) findViewById(R.id.imageView);
         mGoogleloginbtn=findViewById(R.id.googleloginbtn);
       //  btnGoole = (ImageView) findViewById(R.id.imageView2);
@@ -98,6 +111,20 @@ GoogleSignInClient mGoogleSignInClient;
                 showRecoverPasswordDialog();
             }
         });
+
+
+        btnSkip.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginSignupActivity.this,MainActivity.class);
+                intent.putExtra( "ServiceId","Empty" );
+                intent.putExtra( "user","Skip" );
+                startActivity(intent);
+
+
+            }
+        } );
+
 
 //        mAuth = FirebaseAuth.getInstance(  );
 //        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions
@@ -121,7 +148,11 @@ GoogleSignInClient mGoogleSignInClient;
                 AlertDialog.Builder dialog = new AlertDialog.Builder( LoginSignupActivity.this );
                 dialog.setCancelable( false );
                 dialog.setTitle( "SignUp as : " );
-                dialog.setSingleChoiceItems( R.array.selection, -1, new DialogInterface.OnClickListener() {
+                dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).setSingleChoiceItems( R.array.selection, -1, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         selection = arr[which];
@@ -133,7 +164,7 @@ GoogleSignInClient mGoogleSignInClient;
 
 
                         }
-                        if (selection.equals( "Service Provider" )) {
+                        if (selection.equals( "ServiceProvider" )) {
 
                             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
                             pd.setMessage("Logging In....");
@@ -143,8 +174,9 @@ GoogleSignInClient mGoogleSignInClient;
                         }
 
                     }
-                } );
-                dialog.show();
+                });
+               dialog.show();
+
 
 
             }
@@ -199,7 +231,7 @@ GoogleSignInClient mGoogleSignInClient;
                             startActivity(intent);
 
                         }
-                        if(selection.equals( "Service Provider" )){
+                        if(selection.equals( "ServiceProvider" )){
                             Intent intent = new Intent(LoginSignupActivity.this,SignupActivity.class);
                             intent.putExtra( "name", String.valueOf( "ServiceProvider" ) );
                             startActivity(intent);
@@ -207,10 +239,12 @@ GoogleSignInClient mGoogleSignInClient;
                         }
                     }
                 } );
+                dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).show();
 
-
-                final AlertDialog alert = dialog.create();
-                alert.show();
 //                alert.getWindow().getDecorView().getBackground().setColorFilter(new LightingColorFilter(0xFF000000, CUSTOM_COLOR));
             }
         });
@@ -251,8 +285,14 @@ GoogleSignInClient mGoogleSignInClient;
                                 hashMap.put("Email",email);
                                 hashMap.put("Id",uid);
                                 hashMap.put("Category",selection);
-                                hashMap.put("pic","");
-                                hashMap.put("Name","");
+                                if(selection.equals( "ServiceProvider" )){
+                                    hashMap.put("Status","Pending");
+                                }
+                                else {
+                                    hashMap.put("Status","Client");
+                                }
+                                hashMap.put("pic","https://firebasestorage.googleapis.com/v0/b/all4cars-2d23a.appspot.com/o/images%2F-LwmgwIpNqQq8NiaObWH?alt=media&token=80062648-a4e4-47fa-90bf-c3d7592a9aaf");
+                                hashMap.put("Name","Car4All");
 
                                 //firebase data instance
                                 FirebaseDatabase database=FirebaseDatabase.getInstance();
@@ -264,7 +304,7 @@ GoogleSignInClient mGoogleSignInClient;
                                 reference.child(uid).setValue(hashMap);
                             }
 
-                            if(selection.equals("Service Provider")) {
+                            if(selection.equals("ServiceProvider")) {
                                 Intent intent = new Intent(LoginSignupActivity.this, Profile.class);
                                 pd.dismiss();
                                 startActivity(intent);
