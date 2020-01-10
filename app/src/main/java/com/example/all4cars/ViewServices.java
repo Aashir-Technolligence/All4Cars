@@ -16,6 +16,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 public class ViewServices extends AppCompatActivity {
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -58,6 +60,7 @@ public class ViewServices extends AppCompatActivity {
             } );
 
         } else {
+
             databaseReference.child( "Services" ).orderByChild( "service" ).equalTo( check ).addValueEventListener( new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -67,6 +70,7 @@ public class ViewServices extends AppCompatActivity {
                         AddServiceAttr p = dataSnapshot1.getValue( AddServiceAttr.class );
                         addServiceAttrs.add( p );
                     }
+                    Collections.reverse(addServiceAttrs);
                     if (user != null) {
                         if (user.equals( "Skip" ))
                             recyclerView.setAdapter( new ViewServiceAdapter( addServiceAttrs, "Skip", ViewServices.this ) );
