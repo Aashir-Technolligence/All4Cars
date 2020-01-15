@@ -2,34 +2,37 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/Asigurare-Auto"
+        android:id="@+id/AsigurareAuto"
         android:title="Asigurare Auto"></item>
     <item
         android:id="@+id/Benzinarie"
         android:title="Benzinarie"></item>
     <item
-        android:id="@+id/Chip-Tunning"
+        android:id="@+id/ChipTunning"
         android:title="Chip-Tunning"></item>
     <item
-        android:id="@+id/Dealer-Auto_Parc-Auto"
+        android:id="@+id/Cosmetica"
+        android:title="Cosmetica auto"></item>
+    <item
+        android:id="@+id/Dealer"
         android:title="Dealer Auto / Parc Auto"></item>
     <item
         android:id="@+id/Decarbonizare"
         android:title="Decarbonizare"></item>
     <item
-        android:id="@+id/Dezmembrari-Auto"
+        android:id="@+id/Dezmembrari"
         android:title="Dezmembrari Auto"></item>
     <item
         android:id="@+id/Diagnoza"
         android:title="Diagnoza"></item>
     <item
-        android:id="@+id/Geometrie-Roti"
+        android:id="@+id/Geometrie"
         android:title="Geometrie Roti"></item>
     <item
-        android:id="@+id/Incarcare-Clima"
+        android:id="@+id/Incarcare"
         android:title="Incarcare Clima"></item>
     <item
-        android:id="@+id/Incarcare-Electrica"
+        android:id="@+id/IncarcareElectrica"
         android:title="Incarcare Electrica"></item>
     <item
         android:id="@+id/Inmatriculari"
@@ -38,37 +41,37 @@
         android:id="@+id/ITP"
         android:title="ITP"></item>
     <item
-        android:id="@+id/Magazin-Piese-Auto"
+        android:id="@+id/Magazin"
         android:title="Magazin Piese Auto"></item>
     <item
-        android:id="@+id/Montaj-Folii"
+        android:id="@+id/Montaj"
         android:title="Montaj Folii"></item>
     <item
-        android:id="@+id/Parcare-Privata"
+        android:id="@+id/Parcare"
         android:title="Parcare Privata"></item>
     <item
-        android:id="@+id/Rent-A-Car"
+        android:id="@+id/Rent"
         android:title="Rent-A-Car"></item>
     <item
-        android:id="@+id/Scoala-de-Soferi"
+        android:id="@+id/Scoala"
         android:title="Scoala de Soferi"></item>
     <item
-        android:id="@+id/Service-Auto"
+        android:id="@+id/Service"
         android:title="Service Auto"></item>
     <item
-        android:id="@+id/Service-GPL"
+        android:id="@+id/ServiceGPL"
         android:title="Service GPL"></item>
     <item
-        android:id="@+id/Service-Rapid"
+        android:id="@+id/ServiceRapid"
         android:title="Service Rapid (Ulei, Filtre)"></item>
     <item
-        android:id="@+id/Spalatorie-Auto"
+        android:id="@+id/Spalatorie"
         android:title="Spalatorie Auto"></item>
     <item
-        android:id="@+id/Statie-GPL"
+        android:id="@+id/Statie"
         android:title="Statie GPL"></item>
     <item
-        android:id="@+id/Tinichigerie-Vopsitorie"
+        android:id="@+id/Tinichigerie"
         android:title="Tinichigerie / Vopsitorie"></item>
     <item
         android:id="@+id/Tractari"
